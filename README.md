@@ -3,7 +3,8 @@
 This is an interpreter written in Ocaml using sedlex and menhir. The project uses dune as the build system.
 
 # IN PROGRESS ⚠️
-This is a work in progress, as of right now this interpreter has a partially working lexer and parser.
+This is a work in progress.
+As of right now this interpreter has a partially working lexer and parser.
 Once the parser is complete, the next stage would be to start building an AST that can be used to perform semantic analysis.
 
 ## Build Project 🚧
