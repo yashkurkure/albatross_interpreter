@@ -25,7 +25,9 @@ dune clean
 
 ```
 dune exec albatross_interpreter
-//or
+```
+or
+```
 make run
 ```
 Then type the program on the command line, hit enter and press CTRL+D.
