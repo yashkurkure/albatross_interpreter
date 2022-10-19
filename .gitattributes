@@ -1,1 +1,2 @@
 tests/07-vars/generate.py -linguist-detectable
+tests/08-else-otherwise/generate.py -linguist-detectable
