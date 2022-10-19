@@ -100,7 +100,7 @@ let rec token buf =
   | ',' -> debug_print "COMMA";COMMA
   | '\n' -> token buf
   | Plus (Chars " \t") -> token buf
-  | eof -> raise Eof
+  | eof -> EOF
   | _ -> debug_print (Sedlexing.Latin1.lexeme buf); failwith "Unexpected character"
 
 

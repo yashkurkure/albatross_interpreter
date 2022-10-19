@@ -15,14 +15,14 @@
         | hd::tl -> print_string hd; hd ^ (concats tl)
         | [] -> ""*)
 
-    (*let append l1 l2 =
+    let append l1 l2 =
         let rec loop acc l1 l2 =
             (match l1, l2 with
             | [], [] -> List.rev acc
             | [], h :: t -> loop (h :: acc) [] t
             | h :: t, l -> loop (h :: acc) t l)
         in
-        loop [] l1 l2*)
+        loop [] l1 l2
 
 
 %}
@@ -72,7 +72,7 @@
 %token EOF
 
 %start program             /* the entry point */
-%type <string> program
+%type <string list> program
 // %type <string> prog
 %type <string> stmts
 %type <string> stmt
@@ -115,9 +115,14 @@
 // %type <string> arrayread
 %%
 
+
 program:
-stmt        {$1}
-| vardecl   {$1}
+vardecls=list(vardecl); stmts=list(stmt); EOF { append vardecls stmts}
+
+
+// program:
+// stmt        {$1}
+// | vardecl   {$1}
 
 
 // prog:
