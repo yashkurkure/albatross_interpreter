@@ -27,11 +27,11 @@ let rec token buf =
   | '^' -> XOR
   | '&' -> BINARY_AND
   | '|' -> BINARY_OR
-  | '+' -> LESS_THAN
-  | '%' -> LESS_THAN
-  | '-' -> LESS_THAN
-  | '*' -> LESS_THAN
-  | '/' -> LESS_THAN
+  | '+' -> ADD
+  | '%' -> REMAINDER
+  | '-' -> SUB
+  | '*' -> MULTIPLY
+  | '/' -> DIVISION
   | "int" -> TYPE
   | "string" -> TYPE
   | "char" -> TYPE

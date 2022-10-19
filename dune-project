@@ -1,8 +1,8 @@
-(lang dune 3.4)
+(lang dune 2.0)
 
 (name albatross_interpreter)
 
-(using menhir 2.1)
+(using menhir 1.0)
 
 (generate_opam_files true)
 
