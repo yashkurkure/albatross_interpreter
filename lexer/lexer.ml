@@ -20,8 +20,8 @@ let rec token buf =
   | "if" -> debug_print "IF";IF
   | "else" -> debug_print "RETURN";ELSE
   | "repeat" -> debug_print "REPEAT";REPEAT
-  | "var" -> debug_print "RETURN";VAR
-  | "fun" -> debug_print "RETURN";FUN
+  | "var" -> debug_print "VAR";VAR
+  | "fun" -> debug_print "FUN";FUN
   | "==" -> debug_print "RETURN";EQUALITY
   | "<>" -> debug_print "RETURN";NOT_EQUALS
   | '<' -> debug_print "RETURN";LESS_THAN
@@ -39,10 +39,10 @@ let rec token buf =
   | '-' -> debug_print "RETURN";SUB
   | '*' -> debug_print "RETURN";MULTIPLY
   | '/' -> debug_print "RETURN";DIVISION
-  | "int" -> debug_print "RETURN";TYPE
-  | "string" -> debug_print "RETURN";TYPE
-  | "char" -> debug_print "RETURN";TYPE
-  | "void" -> debug_print "RETURN";TYPE
+  | "int" -> debug_print "TYPE_INT";TYPE_INT
+  | "string" -> debug_print "TYPE_STRING";TYPE_STRING
+  | "char" -> debug_print "TYPE_CHAR";TYPE_CHAR
+  | "void" -> debug_print "TYPE_VOID";TYPE_VOID
   | name -> debug_print "NAME";NAME (Sedlexing.Latin1.lexeme buf)
   | int_constant -> debug_print "RETURN"; INT_CONSTANT (Sedlexing.Latin1.lexeme buf)
   | '(' -> debug_print "LPAREN";LEFT_PARENTHESIS
