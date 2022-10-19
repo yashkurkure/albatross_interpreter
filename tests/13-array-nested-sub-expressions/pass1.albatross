@@ -1,0 +1,1 @@
+arr[1+i] := arr[2-i%function(20)];

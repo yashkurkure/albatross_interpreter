@@ -1,0 +1,5 @@
+(library
+        (name lexer)
+        (preprocess (pps sedlex.ppx))
+        (libraries parser util)
+        )

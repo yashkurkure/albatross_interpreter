@@ -1,0 +1,4 @@
+# cannot access array without index
+if(a[] == 0){
+    return a[2];
+}
