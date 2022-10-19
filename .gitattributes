@@ -1,6 +1,1 @@
 tests/07-vars/generate.py -linguist-detectable
-tests/08-else-otherwise/generate.py -linguist-detectable
-tests/09-function-decl/generate.py -linguist-detectable
-tests/10-function-call/generate.py -linguist-detectable
-
-*.sh -linguist-detectable
