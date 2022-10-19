@@ -1,1 +1,2 @@
 *.sh -linguist-detectable
+tests/*/*.py -linguist-detectable
