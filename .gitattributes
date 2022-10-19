@@ -1,1 +1,1 @@
-*.py -linguist-detectable
+tests/07-vars/generate.py -linguist-detectable
