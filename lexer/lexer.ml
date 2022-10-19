@@ -1,13 +1,56 @@
-let digit = [%sedlex.regexp? ('0'..'9')]
-let alphabet = [%sedlex.regexp? 'a'..'z'|'A'..'Z']
-let alphanum = [%sedlex.regexp? digit|alphabet]
-let int_constant = [%sedlex.regexp? Plus digit]
-let name = [%sedlex.regexp? alphabet, (Star alphanum)]
 
+(*utils*)
 let debug: bool = false
 
 let debug_print (s:string) =
   if debug then (print_string s; print_newline())
+
+
+let explode (s: string): char list =
+  let rec exp i l =
+    if i < 0 then l else exp (i - 1) (s.[i] :: l) in
+  exp (String.length s - 1) []
+
+let rec implode (l: char list) : string = 
+  match l with
+  | hd::tl -> (String.make 1 hd) ^ (implode tl)
+  | [] -> ""
+
+
+
+let rec _unescape (l: char list): char list= 
+  match l with
+  | '\\'::'n'::rest -> '\n'::rest
+  | '\\'::'t'::rest -> '\t'::rest
+  | '\\'::'\"'::rest -> '\"'::rest
+  | '\\'::'\\'::rest -> '\\'::rest
+  | hd::tl -> hd::_unescape tl
+  | [] -> []
+
+let unescape (s:string) = 
+  implode (_unescape (explode s))
+
+let stripQuotes str = 
+  match explode str with
+  | '\"'::rest -> (match List.rev rest with
+                  | '\"'::rrest -> implode (List.rev rrest)
+                  | _ -> str)
+  | _ ->  str
+  
+
+(* regexes *)
+let digit = [%sedlex.regexp? ('0'..'9')]
+let alphabet = [%sedlex.regexp? 'a'..'z'|'A'..'Z']
+let alphanum = [%sedlex.regexp? digit|alphabet]
+let int_constant = [%sedlex.regexp? Plus digit]
+
+let string_illlegal = [%sedlex.regexp? Chars ("\"\\\n") ]
+let string_legal = [%sedlex.regexp? Compl (string_illlegal)]
+let string_value = [%sedlex.regexp? ("\\",("n"|"t"|"\""|"\\"))]
+let string_constant = [%sedlex.regexp? "\"", Star (string_value | string_legal) ,"\""]
+
+let name = [%sedlex.regexp? alphabet, (Star alphanum)]
+
 
 open Parser
 exception Eof
@@ -44,7 +87,8 @@ let rec token buf =
   | "char" -> debug_print "TYPE_CHAR";TYPE_CHAR
   | "void" -> debug_print "TYPE_VOID";TYPE_VOID
   | name -> debug_print "NAME";NAME (Sedlexing.Latin1.lexeme buf)
-  | int_constant -> debug_print "RETURN"; INT_CONSTANT (Sedlexing.Latin1.lexeme buf)
+  | int_constant -> debug_print "INT_CONSTANT"; INT_CONSTANT (Sedlexing.Latin1.lexeme buf)
+  | string_constant -> debug_print "STRING_CONSTANT"; STRING_CONSTANT (unescape (stripQuotes (Sedlexing.Latin1.lexeme buf)))
   | '(' -> debug_print "LPAREN";LEFT_PARENTHESIS
   | ')' -> debug_print "RPAREN";RIGHT_PARENTHESIS
   | '{' -> debug_print "LCURLY";LEFT_CURLY

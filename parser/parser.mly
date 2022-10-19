@@ -15,6 +15,14 @@
         | hd::tl -> print_string hd; hd ^ (concats tl)
         | [] -> ""*)
 
+    (*let append l1 l2 =
+        let rec loop acc l1 l2 =
+            (match l1, l2 with
+            | [], [] -> List.rev acc
+            | [], h :: t -> loop (h :: acc) [] t
+            | h :: t, l -> loop (h :: acc) t l)
+        in
+        loop [] l1 l2*)
 
 
 %}
@@ -65,9 +73,10 @@
 
 %start program             /* the entry point */
 %type <string> program
+// %type <string> prog
 %type <string> stmts
 %type <string> stmt
-// %type <string> vardecls
+// %type <string list> vardecls
 %type <string> vardecl
 %type <string> albatrosstype
 // %type <string> fundecl
@@ -107,23 +116,28 @@
 %%
 
 program:
-vardecl         { $1 }
-|stmt           { $1 }
+stmt        {$1}
+| vardecl   {$1}
+
+
+// prog:
+//  vardecls stmts {concats ( append $1 $2)}
 
 // vardecls:
-// vardecl vardecls {$1 ^ $2}
-// |                {""}
+// vardecl vardecls {$1 :: $2}
+// |                {[]}
 
 albatrosstype:
 TYPE_INT        {"int"}
 | TYPE_STRING   {"string"}
 | TYPE_VOID     {"void"}
+| TYPE_CHAR     {"char"}
 
 vardecl:
 VAR NAME albatrosstype ASSIGNMENT exp SEMICOLON  {newline $5}
 
 stmts: 
-stmt stmts      {$1 ^ $2}
+stmt stmts      {($1) ^ ($2)}
 |               {""}
 
 stmt:
@@ -134,13 +148,13 @@ stmt:
 | assignstmt             {$1}
 
 ifstmt:
-IF LEFT_PARENTHESIS exp RIGHT_PARENTHESIS LEFT_CURLY stmts RIGHT_CURLY {(newline $3) ^ $6}
+IF LEFT_PARENTHESIS exp RIGHT_PARENTHESIS LEFT_CURLY stmts RIGHT_CURLY {(newline $3) ^ ($6)}
 
 whilestmt:
-WHILE LEFT_PARENTHESIS exp RIGHT_PARENTHESIS LEFT_CURLY stmts RIGHT_CURLY {(newline $3) ^ $6}
+WHILE LEFT_PARENTHESIS exp RIGHT_PARENTHESIS LEFT_CURLY stmts RIGHT_CURLY {(newline $3) ^ ($6)}
 
 repeatstmt:
-REPEAT LEFT_PARENTHESIS exp RIGHT_PARENTHESIS LEFT_CURLY stmts RIGHT_CURLY {(newline $3) ^ $6}
+REPEAT LEFT_PARENTHESIS exp RIGHT_PARENTHESIS LEFT_CURLY stmts RIGHT_CURLY {(newline $3) ^ ($6)}
 
 returnstmt: 
 RETURN exp SEMICOLON {(newline $2)}
