@@ -4,8 +4,16 @@ This is an interpreter written in Ocaml using sedlex and menhir. The project use
 
 # IN PROGRESS ⚠️
 This is a work in progress.
-As of right now this interpreter has a partially working lexer and parser.
-Once the parser is complete, the next stage would be to start building an AST that can be used to perform semantic analysis.
+- [x] Dune Build System
+- [x] ocamllex/sedlex and ocamlyacc/menhir
+- [x] Lexer
+- [x] Parser
+- [ ] AST
+- [ ] Create semantic rules for albatross
+- [ ] Semantic Analysis 
+- [ ] Big step/ Small step interpeter
+- [ ] Extension to support arrays
+- [ ] Extension to include a print system call
 
 ## Build Project 🚧
 ```
