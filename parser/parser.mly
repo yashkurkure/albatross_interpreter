@@ -89,9 +89,9 @@
 %type <string> repeatstmt
 %type <string> assignstmt
 // %type <string> arrayassignstmt
-// %type <string> block
-// %type <string> elsestmt
-// %type <string> otherwisestmt
+%type <string> block
+%type <string> elsestmt
+%type <string> otherwisestmt
 %type <string> exp
 %type <string> exp1
 %type <string> exp2
@@ -153,13 +153,21 @@ stmt:
 | assignstmt             {$1}
 
 ifstmt:
-IF LEFT_PARENTHESIS exp RIGHT_PARENTHESIS LEFT_CURLY stmts RIGHT_CURLY {(newline $3) ^ ($6)}
+IF LEFT_PARENTHESIS exp RIGHT_PARENTHESIS block elsestmt {(newline $3) ^ ($5) ^ ($6)}
+
+elsestmt:
+ELSE block {$2}
+|          {""}
 
 whilestmt:
-WHILE LEFT_PARENTHESIS exp RIGHT_PARENTHESIS LEFT_CURLY stmts RIGHT_CURLY {(newline $3) ^ ($6)}
+WHILE LEFT_PARENTHESIS exp RIGHT_PARENTHESIS block otherwisestmt {(newline $3) ^ ($5) ^ ($6)}
+
+otherwisestmt:
+OTHERWISE block {$2}
+|          {""}
 
 repeatstmt:
-REPEAT LEFT_PARENTHESIS exp RIGHT_PARENTHESIS LEFT_CURLY stmts RIGHT_CURLY {(newline $3) ^ ($6)}
+REPEAT LEFT_PARENTHESIS exp RIGHT_PARENTHESIS block {(newline $3) ^ ($5)}
 
 returnstmt: 
 RETURN exp SEMICOLON {(newline $2)}
@@ -167,6 +175,9 @@ RETURN exp SEMICOLON {(newline $2)}
 
 assignstmt:
 NAME ASSIGNMENT exp SEMICOLON {(newline $3)}
+
+block:
+LEFT_CURLY stmts RIGHT_CURLY {$2}
 
 exp: exp1    {$1}
 
