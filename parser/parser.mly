@@ -117,7 +117,7 @@
 
 
 program:
-vardecls=list(vardecl); stmts=list(stmt); EOF { append vardecls stmts}
+vardecls=list(vardecl); fundecls=list(fundecl); stmts=list(stmt); EOF { append (append vardecls fundecls) (stmts)}
 
 
 // program:
@@ -137,6 +137,28 @@ TYPE_INT        {"int"}
 | TYPE_STRING   {"string"}
 | TYPE_VOID     {"void"}
 | TYPE_CHAR     {"char"}
+
+fundecl:
+FUN NAME albatrosstype LEFT_PARENTHESIS RIGHT_PARENTHESIS funblock {$6}
+| FUN NAME albatrosstype LEFT_PARENTHESIS fundeclargs1 RIGHT_PARENTHESIS funblock {$7}
+
+funblock:
+LEFT_CURLY vardecls stmts RIGHT_CURLY {$2 ^ $3}
+
+fundeclargs1:
+fundeclarg fundeclargs2 {""}
+| fundeclarg {""}
+
+fundeclargs2:
+COMMA fundeclargs1 {""}
+
+fundeclarg:
+NAME albatrosstype   {""}
+
+
+vardecls: 
+vardecl vardecls      {($1) ^ ($2)}
+|               {""}
 
 vardecl:
 VAR NAME albatrosstype ASSIGNMENT exp SEMICOLON  {newline $5}

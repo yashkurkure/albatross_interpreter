@@ -1,7 +1,6 @@
 
 (*utils*)
 let debug: bool = false
-
 let debug_print (s:string) =
   if debug then (print_string s; print_newline())
 
