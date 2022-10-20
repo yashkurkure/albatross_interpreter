@@ -5,10 +5,13 @@ let rec print_string_list l=
   | hd::tl -> print_string hd; print_string_list tl
   | [] -> print_newline()
 
+let print_ast (p : Ast.program) = 
+  match p with
+  | Ast.Program(vardecs, fundecs, stmts) -> print_string_list vardecs; print_string_list fundecs; print_string_list stmts
+
 let _ =
   let lexbuf = Sedlexing.Utf8.from_channel stdin in
   let lexer  = Sedlexing.with_tokenizer Lexer.token lexbuf in
   let parser = MenhirLib.Convert.Simplified.traditional2revised Parser.program in
   let result = parser lexer in
-    print_string_list result; flush stdout
-
+    print_ast result; flush stdout

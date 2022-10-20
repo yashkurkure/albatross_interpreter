@@ -4,4 +4,4 @@
 
 (library
         (name parser)
-        (libraries util))
+        (libraries util ast))
