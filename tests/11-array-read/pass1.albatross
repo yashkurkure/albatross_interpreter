@@ -1,4 +1,0 @@
-# read array using an index
-if(a[0] == 0){
-    return arr[100];
-}
