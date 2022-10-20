@@ -76,13 +76,13 @@
 // %type <string> prog
 %type <string> stmts
 %type <string> stmt
-// %type <string list> vardecls
+%type <string> vardecls
 %type <string> vardecl
 %type <string> albatrosstype
-// %type <string> fundecl
-// %type <string> fundeclarg
-// %type <string> fundeclargs1
-// %type <string> fundeclargs2
+%type <string> fundecl
+%type <string> fundeclarg
+%type <string> fundeclargs1
+%type <string> fundeclargs2
 %type <string> ifstmt
 %type <string> returnstmt
 %type <string> whilestmt
@@ -108,10 +108,10 @@
 %type <string> comparison
 %type <string> addsub
 %type <string> muldivrem
-// %type <string> funcall
-// %type <string> funcallstmt
-// %type <string> funcallargs
-// %type <string> funcallargs2
+%type <string> funcall
+%type <string> funcallstmt
+%type <string> funcallargs
+%type <string> funcallargs2
 // %type <string> arrayread
 %%
 
@@ -173,6 +173,11 @@ stmt:
 | whilestmt             {$1}
 | repeatstmt             {$1}
 | assignstmt             {$1}
+| funcallstmt            { $1 }
+
+
+funcallstmt:
+funcall SEMICOLON {$1}
 
 ifstmt:
 IF LEFT_PARENTHESIS exp RIGHT_PARENTHESIS block elsestmt {(newline $3) ^ ($5) ^ ($6)}
@@ -263,7 +268,20 @@ NOT exp10 {surroundParens (concat "!" $2)}
 | exp11   { $1}
 
 exp11:
-INT_CONSTANT   { surroundParens $1 }
-| STRING_CONSTANT { surroundParens ( surroundQuotes $1 )}
-| NAME           { surroundParens $1 }
+INT_CONSTANT                              { surroundParens $1 }
+| STRING_CONSTANT                         { surroundParens ( surroundQuotes $1 )}
+| NAME                                    { surroundParens $1 }
 | LEFT_PARENTHESIS exp RIGHT_PARENTHESIS  { $2 }
+| funcall                                 { $1 }
+
+
+funcall:
+NAME LEFT_PARENTHESIS funcallargs RIGHT_PARENTHESIS { ($1) ^ (surroundParens $3) }
+
+funcallargs:
+exp funcallargs2 { $1 ^ $2 }
+|   { "" }
+
+funcallargs2:
+COMMA exp funcallargs2 {"," ^ $2 ^ $3}
+| { "" }
