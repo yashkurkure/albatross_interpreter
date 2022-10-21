@@ -17,8 +17,9 @@ type exp_node=
 | Eq      of exp_node * exp_node
 | Not     of exp_node
 | Int     of int
+| String  of string
 | Ident   of string
-| FunCall of string*(exp_node list)
+| FunCallExp of string*(exp_node list)
 | Nil
 
 type stmt_node = 
@@ -27,14 +28,14 @@ type stmt_node =
 | WhileOtherwise  of exp_node * (stmt_node list) * (stmt_node list)
 | Repeat          of exp_node * (stmt_node list)
 | Assign          of string * exp_node
-| FunCall         of string * (exp_node list)
+| FunCallStmt         of string * (exp_node list)
 
 type ty_node = Int_ty | String_ty | Void_ty
 
 type vardec_node = VarDec of string * ty_node * exp_node
 
-type fun_param = FunParam of string * ty_node
+type fundec_arg = FunDecArg of string * ty_node
 
-type fundec_node = FunDec of string * ty_node * (fun_param list) * (vardec_node list) * (stmt_node list)
+type fundec_node = FunDec of string * ty_node * (fundec_arg list) * (vardec_node list) * (stmt_node list)
 
-type program = Program of (string list) * (string list) * (string list)
+type program = Program of (vardec_node list) * (fundec_node list) * (stmt_node list)
