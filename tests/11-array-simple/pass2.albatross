@@ -1,0 +1,119 @@
+
+var num int := 1;
+var str string := "string";
+var strarr string[15];
+
+##########################################
+## ARRAY DECLARATIONS USING SIZE
+
+#/*
+## Array declaration style 1
+var arr int[100];
+var arr1 int[arr[arr[1]]];
+##*/
+
+##/*
+## Array declaration style 1
+var arr2 int[num];
+##*/
+
+
+/*
+## Array declaration style 1 fail
+## undeclared symbol in array size
+var arr3 int[undef];
+##*/
+
+/*
+## Array declaration style 1 fail
+## incorrect type of expression in size
+var arr4 int[str];
+##*/
+
+/*
+## Array declaration style 1
+var arr5 int[100];
+var arr6 int[arr2[arr[1]]];
+##*/
+
+
+
+##########################################
+## ARRAY DECLARATIONS USING EXPRESSIONS
+
+##/*
+## Array declaration style 2
+var arr7 int[] := {1+1, 2+2, 3+3, num};
+##*/
+
+/*
+# Array declaration style 2 fail
+# undefined symbols in init expressions
+var arr8 int[] := {undef1, undef2, num};
+##*/
+
+/*
+## Array declaration style 2 fail
+## incorrect types in init expressions
+var arr9 int[] := {str, "abc"};
+#var arr10 int[] := {1, "abc"};
+##*/
+
+
+fun f int (argument int) {
+ return 0;
+}
+
+
+##########################################
+## ARRAY WRITES
+
+
+## Array Write
+arr[1] := 0;
+
+
+## Array Write
+arr[arr[1]] := arr[0];
+arr[f(num)] := arr[0];
+
+##Array Write fail
+## undefined symbol in access expression
+#arr[a] := 0;
+
+
+## Array Write fail
+## incorrect type of access expression
+#arr["string"] := 0;
+#arr[str] := 0;
+
+## Array Write fail
+## incorrect type of lhs expression
+#arr[1] := "string";
+#arr[2] := str;
+
+##########################################
+## ARRAY READ IN EXPRESSIONS
+
+## Array Read
+num := arr[0];
+num := arr[f(num)];
+
+## Array Read
+num := arr[arr[1]];
+
+## Array Read fail
+## undeclared symbol in index
+#num := arr[undef];
+
+## Array Read fail
+## incorrect type in index
+#num := arr["string"];
+#num := arr[str];
+
+
+
+
+
+
+

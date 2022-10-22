@@ -30,7 +30,7 @@ let rec print_exp_node (exp_node: Ast.exp_node) =
   | Ast.Ident(_) -> assert(false) (*TODO: Implement me*)
   | Ast.FunCallExp(_,exps) -> print_exps exps;assert(false)(*TODO: Implement me*)
   | Ast.Nil -> assert(false) (*TODO: Implement me*)
-  | _ -> assert(false) (*TODO: Implement me*)
+  | _ -> assert(true) (*Do nohting*)
 
 
 let rec print_stmt_node (stmt_node: Ast.stmt_node) =
@@ -45,7 +45,7 @@ let rec print_stmt_node (stmt_node: Ast.stmt_node) =
 and print_stmts (stmts: Ast.stmt_node list)=
   match stmts with
   | hd::rest -> print_stmt_node hd; print_stmts rest
-  | [] -> print_newline()
+  | [] -> assert(true)
 
 let print_ast (p : Ast.program) = 
   match p with
