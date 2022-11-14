@@ -8,7 +8,7 @@ This is a work in progress.
 - [x] ocamllex/sedlex and ocamlyacc/menhir
 - [x] Lexer
 - [x] Parser
-- [ ] AST
+- [x] AST
 - [ ] Create semantic rules for albatross
 - [ ] Semantic Analysis 
 - [ ] Big step/ Small step interpeter
