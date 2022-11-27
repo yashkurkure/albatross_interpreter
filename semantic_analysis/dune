@@ -1,0 +1,3 @@
+(library
+        (name semantic_analysis)
+        (libraries util ast))
