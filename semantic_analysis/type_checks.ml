@@ -7,7 +7,31 @@ let rec type_check_expr (exp: exp_node)(f: fun_frame option): ty_node option =
   | Add(e1, e2),_ -> (match (type_check_expr e1 f), (type_check_expr e2 f) with
                      | Some(Int_ty), Some(Int_ty) -> Some(Int_ty)
                      | _, _ -> exit(3))
-  |_,_-> None;;
+  | Sub(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | Mul(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | Div(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | Rem(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | BinOr(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | BinAnd(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | Xor(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | Or(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | And(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | Leq(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | Geq(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | Less(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | Greater(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | Neq(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | Eq(e1, e2), _ -> type_check_binop_expr e1 e2 f
+  | Not(e),_ -> (match (type_check_expr e f) with 
+              | Some(Int_ty) -> Some(Int_ty)
+              | _ -> exit(3) (* Fail when operand is not Int_ty*)
+              )
+  |_,_-> None
+
+  and type_check_binop_expr (e1: exp_node) (e2: exp_node) (f: fun_frame option): ty_node option = 
+    match (type_check_expr e1 f), (type_check_expr e2 f) with
+                       | Some(Int_ty), Some(Int_ty) -> Some(Int_ty)
+                       | _, _ -> exit(3);; (* Fail when both operands are not Int_ty*)
 
 
 let rec type_check_exprs (exprs: exp_node list)(f: fun_frame option) = 
