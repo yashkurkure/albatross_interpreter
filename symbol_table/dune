@@ -1,0 +1,3 @@
+(library
+        (name symbol_table)
+        (libraries util ast))

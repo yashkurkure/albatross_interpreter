@@ -1,6 +1,6 @@
 (executable
  (public_name albatross)
  (name main)
- (libraries sedlex menhirLib lexer parser ast semantic_analysis)
+ (libraries sedlex menhirLib lexer parser ast semantic_analysis print_ast)
  (preprocess (pps sedlex.ppx))
 )
