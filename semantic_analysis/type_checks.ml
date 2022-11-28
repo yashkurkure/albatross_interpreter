@@ -5,9 +5,7 @@ let rec type_check_expr (exp: exp_node)(symbol_table: symtab)(f: fun_frame optio
   match exp, f with
   | String(_), _ -> String_ty
   | Int(_), _-> Int_ty
-  | Add(e1, e2),_ -> (match (type_check_expr e1 symbol_table f), (type_check_expr e2 symbol_table f) with
-                     | Int_ty, Int_ty -> Int_ty
-                     | _, _ -> exit(3))
+  | Add(e1, e2),_ -> type_check_binop_expr e1 e2 symbol_table f
   | Sub(e1, e2), _ -> type_check_binop_expr e1 e2 symbol_table f
   | Mul(e1, e2), _ -> type_check_binop_expr e1 e2 symbol_table f
   | Div(e1, e2), _ -> type_check_binop_expr e1 e2 symbol_table f

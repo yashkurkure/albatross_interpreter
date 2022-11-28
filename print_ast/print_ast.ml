@@ -52,7 +52,7 @@
 
     | WhileOtherwise(exp, while_stmts, otherwise_stmts) -> print_exp exp symbol_table; print_stmts while_stmts symbol_table; print_stmts otherwise_stmts symbol_table
     | Repeat(exp, stmts) -> print_exp exp symbol_table; print_stmts stmts symbol_table
-    | Assign(ident, _) -> (match lookup_symtab symbol_table ident with
+    | Assign(ident, exp) -> print_exp exp symbol_table; (match lookup_symtab symbol_table ident with
                           | Some(t) -> Printf.printf "Variable written \"%s\" type %s\n" ident (ty_node_to_str t)
                           | None -> assert(false))
     | FunCallStmt(ident, _) -> Printf.printf "Function called \"%s\" returns %s\n" ident "N/A (fix me)"
@@ -65,7 +65,7 @@
     
   let rec print_vardecs (vardecs: vardec_node list) (symbol_table: symtab) : unit =
     match vardecs with
-    | VarDec(ident, t, _)::rest -> Printf.printf "Variable declared \"%s\" type %s\n" ident (ty_node_to_str t); print_vardecs rest symbol_table
+    | VarDec(ident, t, exp)::rest -> Printf.printf "Variable declared \"%s\" type %s\n" ident (ty_node_to_str t); print_exp exp symbol_table; print_vardecs rest symbol_table
     | [] -> assert(true)
   
   let print_ast (p : program) (symbol_table: symtab): unit = 
