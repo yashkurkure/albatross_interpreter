@@ -1,0 +1,1 @@
+type context = Glob_ct | Func_ct of string

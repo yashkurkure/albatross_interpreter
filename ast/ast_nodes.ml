@@ -38,6 +38,4 @@ type fundec_arg = FunDecArg of string * ty_node
 
 type fundec_node = FunDec of string * ty_node * (fundec_arg list) * (vardec_node list) * (stmt_node list)
 
-type fun_frame = FunFrame of fundec_node
-
 type program = Program of (vardec_node list) * (fundec_node list) * (stmt_node list)
