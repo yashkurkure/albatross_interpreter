@@ -56,7 +56,7 @@
                                     )
                                     | None -> assert(false) )
                       | None -> assert(false))
-    | FunCallExp(ident, arg_inits), c -> print_exps arg_inits symbol_table function_table c; (match lookup_functiontab function_table ident with
+    | FunCallExp(ident, _), _ -> (match lookup_functiontab function_table ident with
                                     | Some(FunDec(_,t,_,_,_))-> Printf.printf "Function called \"%s\" returns %s\n" ident (ty_node_to_str t)
                                     | None -> assert(false))
     | Nil, _ -> assert(true) (*Empty expression does nothing*)
@@ -90,7 +90,7 @@
                                     )
                                     | None -> assert(false) )
                       | None -> assert(false))
-    | FunCallStmt(ident, arg_inits), c ->  print_exps arg_inits symbol_table function_table c; (match lookup_functiontab function_table ident with
+    | FunCallStmt(ident, _), _ -> (match lookup_functiontab function_table ident with
                                       | Some(FunDec(_,t,_,_,_))-> Printf.printf "Function called \"%s\" returns %s\n" ident (ty_node_to_str t)
                                       | None -> assert(false))
   

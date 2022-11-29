@@ -67,10 +67,11 @@ and symbol_resolution_var (var: vardec_node) (symbol_table: symtab) (function_ta
 (* Adds the arguemnts of the function to the symbol table *)
 let rec add_function_args_symtab (funargs: fundec_arg list) (symbol_table: symtab): symtab = 
   match funargs with
-  | FunDecArg(x,t)::rest -> add_function_args_symtab (rest) (update_symtab symbol_table x t)
+  | FunDecArg(x,t)::rest -> (match lookup_symtab symbol_table x with
+                            | Some(_) -> exit(3) (* Fail when arg has the same name as some global variable*)
+                            | None -> add_function_args_symtab (rest) (update_symtab symbol_table x t))
   | [] -> symbol_table
 
-(* Add *)
 
 let rec symbol_resolution_functions (funs: fundec_node list) (symbol_table: symtab) (function_table: functiontab): functiontab = 
   match funs with

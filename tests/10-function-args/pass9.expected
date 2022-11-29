@@ -1,40 +1,40 @@
 Function declared "f1" returns int
-	Argument "a1" type int position 0
+	Argument "a1" type int
 Function declared "f2" returns int
-	Argument "a1" type int position 0
-	Argument "a2" type string position 1
+	Argument "a1" type int
+	Argument "a2" type string
 Function declared "f3" returns int
-	Argument "a1" type int position 0
-	Argument "a2" type string position 1
-	Argument "a3" type int position 2
-	Argument "a4" type string position 3
+	Argument "a1" type int
+	Argument "a2" type string
+	Argument "a3" type int
+	Argument "a4" type string
 Function declared "f4" returns int
-	Argument "a1" type int position 0
-	Argument "a2" type string position 1
-	Argument "a3" type int position 2
-	Argument "a4" type string position 3
-	Argument "a5" type int position 4
+	Argument "a1" type int
+	Argument "a2" type string
+	Argument "a3" type int
+	Argument "a4" type string
+	Argument "a5" type int
 Function declared "f5" returns int
-	Argument "a1" type int position 0
-	Argument "a2" type string position 1
-	Argument "a3" type int position 2
-	Argument "a4" type string position 3
-	Argument "a5" type int position 4
-	Argument "a6" type string position 5
+	Argument "a1" type int
+	Argument "a2" type string
+	Argument "a3" type int
+	Argument "a4" type string
+	Argument "a5" type int
+	Argument "a6" type string
 Function declared "f6" returns int
-	Argument "a1" type int position 0
-	Argument "a2" type string position 1
-	Argument "a3" type int position 2
-	Argument "a4" type string position 3
-	Argument "a5" type int position 4
-	Argument "a6" type string position 5
-	Argument "a7" type int position 6
+	Argument "a1" type int
+	Argument "a2" type string
+	Argument "a3" type int
+	Argument "a4" type string
+	Argument "a5" type int
+	Argument "a6" type string
+	Argument "a7" type int
 Function declared "f7" returns int
-	Argument "a1" type int position 0
-	Argument "a2" type string position 1
-	Argument "a3" type int position 2
-	Argument "a4" type string position 3
-	Argument "a5" type int position 4
-	Argument "a6" type string position 5
-	Argument "a7" type int position 6
-	Argument "a8" type string position 7
+	Argument "a1" type int
+	Argument "a2" type string
+	Argument "a3" type int
+	Argument "a4" type string
+	Argument "a5" type int
+	Argument "a6" type string
+	Argument "a7" type int
+	Argument "a8" type string
