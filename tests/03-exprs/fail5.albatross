@@ -1,1 +1,0 @@
-while(7%8) { return "cs473"|10; }

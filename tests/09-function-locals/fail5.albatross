@@ -1,9 +1,0 @@
-var global int := 400;
-
-fun f1 int () {
-  var variable int := "bad type";
-
-  return variable;
-}
-
-return f1();

@@ -1,4 +1,0 @@
-var variable int := 0;
-
-variable := 473;
-return variable;

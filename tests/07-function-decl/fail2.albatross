@@ -1,5 +1,0 @@
-fun f int () {
-  return "hello";
-}
-
-return 2;

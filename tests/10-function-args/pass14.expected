@@ -1,6 +1,0 @@
-Function declared "f1" returns int
-	Argument "a1" type int
-	Local variable "a2" type int
-Argument/local read "a1" type int
-Argument/local read "a2" type int
-Function called "f1" returns int

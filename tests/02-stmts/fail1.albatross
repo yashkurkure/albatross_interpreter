@@ -1,1 +1,0 @@
-if ("string") { return 0; }

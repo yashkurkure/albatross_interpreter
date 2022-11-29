@@ -1,5 +1,0 @@
-fun fv void () {
-  return;
-}
-
-fv();

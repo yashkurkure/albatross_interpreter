@@ -1,8 +1,0 @@
-var global int := 400;
-
-fun f int () {
-  var global int := 70;
-  return global+global;
-}
-
-return f() + 3;

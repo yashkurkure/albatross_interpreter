@@ -1,1 +1,0 @@
-while (8<"string") { return 10>11; }

@@ -1,5 +1,0 @@
-fun f void () {
-  return 10;
-}
-
-return 2;

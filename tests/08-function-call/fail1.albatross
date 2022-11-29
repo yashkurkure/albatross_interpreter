@@ -1,5 +1,0 @@
-fun f string () {
-  return "";
-}
-
-return f();

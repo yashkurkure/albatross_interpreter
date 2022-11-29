@@ -1,4 +1,0 @@
-var variable string := "";
-
-variable := "good type";
-return variable;

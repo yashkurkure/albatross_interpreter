@@ -1,33 +1,6 @@
 /* File parser.mly (unchanged) */
 %{
     open Ast.Ast_nodes
-    (*let surroundParens s:string = "("^s^")"
-
-    (* let surroundBrackets s:string = "["^s^"]" *)
-
-    let surroundQuotes s:string = "\""^s^"\""
-
-    let concat (s1:string) (s2:string) = s1^s2
-
-    let newline s: string = s^"\n"
-
-    (*let rec concats (l: string list): string = 
-        match l with
-        | hd::tl -> print_string hd; hd ^ (concats tl)
-        | [] -> ""*)
-
-    (* let append l1 l2 =
-        let rec loop acc l1 l2 =
-            (match l1, l2 with
-            | [], [] -> List.rev acc
-            | [], h :: t -> loop (h :: acc) [] t
-            | h :: t, l -> loop (h :: acc) t l)
-        in
-        loop [] l1 l2 *)
-    
-    *)
-
-
 %}
 
 %token <string> INT_CONSTANT

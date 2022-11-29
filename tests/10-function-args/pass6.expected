@@ -1,7 +1,0 @@
-Variable declared "global" type int
-Function declared "f1" returns int
-	Argument "argument" type int
-	Local variable "v" type int
-Argument/local read "argument" type int
-Argument/local read "v" type int
-Function called "f1" returns int

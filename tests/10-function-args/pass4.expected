@@ -1,6 +1,0 @@
-Function declared "f1" returns int
-	Argument "argument" type int
-Function declared "f2" returns void
-	Local variable "v" type int
-Function called "f1" returns int
-Function called "f1" returns int

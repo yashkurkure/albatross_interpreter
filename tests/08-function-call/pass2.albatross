@@ -1,5 +1,0 @@
-fun f int () {
-  return 1;
-}
-
-return f()+1+f();

@@ -1,1 +1,0 @@
-while(7%8) { return 9|10; } otherwise { return "a"+"b"; }

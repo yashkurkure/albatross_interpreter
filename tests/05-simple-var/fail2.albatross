@@ -1,3 +1,0 @@
-var variable int := "bad type";
-
-return variable;
