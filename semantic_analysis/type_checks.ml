@@ -95,7 +95,7 @@ and type_check_stmts (stmts: stmt_node list)(symbol_table: symtab)(function_tabl
 
 let rec type_check_var (var: vardec_node) (symbol_table: symtab) (function_table: functiontab) (c: context): unit = 
   match var,c  with 
-  | VarDec(_,_,_), Func_ct(_)-> assert(false)
+  | VarDec(_,t,exp), Func_ct(_)-> if t = (type_check_expr exp symbol_table function_table c) then assert(true) else exit(3)
   | VarDec(_,t,exp), Glob_ct-> (if t = (type_check_expr exp symbol_table function_table c) 
                               then assert(true) 
                               else exit(3) (* Fail when variable type and initial expression are not of same type*)

@@ -39,3 +39,8 @@ type fundec_arg = FunDecArg of string * ty_node
 type fundec_node = FunDec of string * ty_node * (fundec_arg list) * (vardec_node list) * (stmt_node list)
 
 type program = Program of (vardec_node list) * (fundec_node list) * (stmt_node list)
+
+let rec contains_vardec (l: vardec_node list) (x: string): bool = 
+  match l with
+  | VarDec(ident, _, _)::rest -> if ident = x then true else contains_vardec rest x
+  | [] -> false;;
