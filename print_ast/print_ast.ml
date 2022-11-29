@@ -16,9 +16,12 @@
   | Void_ty -> "void";;
 
 
-  let print_exps (_exps: exp_node list)= ();;
+  let rec print_exps (exps: exp_node list) (symbol_table: symtab) (function_table: functiontab) (c: context)= 
+    match exps with
+    | exp::rest -> print_exp exp symbol_table function_table c; print_exps rest symbol_table function_table c
+    | [] -> assert(true)
 
-  let rec print_exp(exp_node: exp_node) (symbol_table: symtab) (function_table: functiontab) (c: context)=
+  and print_exp(exp_node: exp_node) (symbol_table: symtab) (function_table: functiontab) (c: context): unit=
     match exp_node with
     | Add(exp1, exp2) -> print_exp exp1 symbol_table function_table c; print_exp exp2 symbol_table function_table c;
     | Sub(exp1, exp2) -> print_exp exp1 symbol_table function_table c; print_exp exp2 symbol_table function_table c;
@@ -40,7 +43,9 @@
     | Ident(ident) -> (match lookup_symtab symbol_table ident with
                       | Some(t) -> Printf.printf "Variable read \"%s\" type %s\n" ident (ty_node_to_str t)
                       | None -> assert(false))
-    | FunCallExp(ident, _) -> Printf.printf "Function called \"%s\" returns %s\n" ident "N/A (fix me)"
+    | FunCallExp(ident, arg_inits) -> print_exps arg_inits symbol_table function_table c; (match lookup_functiontab function_table ident with
+                                    | Some(FunDec(_,t,_,_,_))-> Printf.printf "Function called \"%s\" returns %s\n" ident (ty_node_to_str t)
+                                    | None -> assert(false))
     | Nil -> assert(true) (*Empty expression does nothing*)
     | _ -> assert(true);; (*Do nohting*)
   
@@ -59,7 +64,9 @@
     | Assign(ident, exp) -> print_exp exp symbol_table function_table c; (match lookup_symtab symbol_table ident with
                           | Some(t) -> Printf.printf "Variable written \"%s\" type %s\n" ident (ty_node_to_str t)
                           | None -> assert(false))
-    | FunCallStmt(ident, _) -> Printf.printf "Function called \"%s\" returns %s\n" ident "N/A (fix me)"
+    | FunCallStmt(ident, arg_inits) ->  print_exps arg_inits symbol_table function_table c; (match lookup_functiontab function_table ident with
+                                      | Some(FunDec(_,t,_,_,_))-> Printf.printf "Function called \"%s\" returns %s\n" ident (ty_node_to_str t)
+                                      | None -> assert(false))
   
   and print_stmts (stmts: stmt_node list) (symbol_table: symtab) (function_table :functiontab) (c: context)=
     match stmts with
@@ -75,7 +82,7 @@
         print_vardecs rest symbol_table function_table c)
     
     | VarDec(ident, t, exp)::rest, Func_ct(_) -> (
-      Printf.printf "Local Variable \"%s\" type %s\n" ident (ty_node_to_str t);
+      Printf.printf "\tLocal Variable \"%s\" type %s\n" ident (ty_node_to_str t);
       print_exp exp symbol_table function_table c;
       print_vardecs rest symbol_table function_table c)
 
@@ -83,13 +90,17 @@
   
   let rec print_fundecs (fundecs: fundec_node list) (symbol_table: symtab) (function_table: functiontab): unit = 
     match fundecs with
-    | FunDec(ident, t, _, vars, stmts)::rest -> (
+    | FunDec(ident, t, args, vars, stmts)::rest -> (
         Printf.printf "Function declared \"%s\" returns %s\n" ident (ty_node_to_str t);
+        print_fundec_args args symbol_table function_table;
         print_vardecs vars symbol_table function_table (Func_ct(ident));
         print_stmts stmts symbol_table function_table (Func_ct(ident)));
         print_fundecs rest symbol_table function_table
     | [] -> assert(true)
-
+  and print_fundec_args (fundec_args: fundec_arg list) (symbol_table: symtab) (function_table: functiontab): unit = 
+    match fundec_args with
+    | FunDecArg(x, t):: rest -> Printf.printf "\tArgument \"%s\" type %s\n" x (ty_node_to_str t); print_fundec_args rest symbol_table function_table
+    | [] -> assert(true)
 
 
   let print_ast (p : program) (symbol_table: symtab) (function_table: functiontab): unit = 

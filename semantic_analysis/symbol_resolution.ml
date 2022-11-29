@@ -3,11 +3,10 @@ open Ast.Context
 open Tables.Symbol_table
 open Tables.Function_table
 
-
 let rec symbol_resolution_exprs (exprs: exp_node list) (symbol_table: symtab) (function_table: functiontab) (c: context): unit =
   match exprs with
   | expr::rest -> symbol_resolution_expr expr symbol_table function_table c; symbol_resolution_exprs rest symbol_table function_table c
-  | [] -> assert(false)
+  | [] -> assert(true)
 
 and symbol_resolution_expr (exp: exp_node) (symbol_table: symtab) (function_table: functiontab) (c: context): unit = 
   match exp with
@@ -33,7 +32,10 @@ and symbol_resolution_expr (exp: exp_node) (symbol_table: symtab) (function_tabl
   | Not(e) -> symbol_resolution_expr e symbol_table function_table c
   | Int(_) -> assert(true)
   | String(_) -> assert(true)
-  | FunCallExp(_, _) -> assert(false)
+  | FunCallExp(x, arg_inits) -> (match (lookup_functiontab function_table x) with
+                                | None -> exit(3)
+                                | Some(_) -> (symbol_resolution_exprs arg_inits symbol_table function_table c);
+                                )
   | Nil -> assert(true)
 
 
@@ -77,19 +79,23 @@ let rec symbol_resolution_functions (funs: fundec_node list) (symbol_table: symt
                                           | None -> symbol_resolution_functions 
                                                     (rest) 
                                                     (symbol_table) 
-                                                    (update_functiontab 
-                                                        (function_table) 
-                                                        (x) 
-                                                        (symbol_resolution_function (FunDec(x,t,args,vars,stmts)) symbol_table function_table)
-                                                    )
+                                                        (symbol_resolution_function 
+                                                            (FunDec(x,t,args,vars,stmts)) 
+                                                            (symbol_table) 
+                                                            (update_functiontab 
+                                                                (function_table) 
+                                                                (x)
+                                                                (FunDec(x,t,args,vars,stmts)) 
+                                                            )
+                                                          )
                                           )
   | [] -> function_table
-and symbol_resolution_function (fundec: fundec_node) (symbol_table:symtab) (function_table: functiontab): fundec_node = 
+and symbol_resolution_function (fundec: fundec_node) (symbol_table:symtab) (function_table: functiontab): functiontab = 
   match fundec with FunDec(x,_,args,vars,stmts)-> (
     let args_sym_table = add_function_args_symtab args symbol_table in
     let args_locs_sym_table = symbol_resolution_vars vars args_sym_table function_table (Func_ct(x)) in
     symbol_resolution_stmts stmts args_locs_sym_table function_table (Func_ct(x))
-  ) ; fundec;;
+  ) ; function_table;;
 
 
 let symbol_resolution (p: program): symtab*functiontab = 

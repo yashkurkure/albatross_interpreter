@@ -3,6 +3,10 @@ open Ast.Context
 open Tables.Symbol_table
 open Tables.Function_table
 
+
+
+
+
 let rec type_check_expr (exp: exp_node)(symbol_table: symtab)(function_table: functiontab)(c: context): ty_node = 
   match exp, c with
   | String(_), _ -> String_ty
@@ -30,18 +34,23 @@ let rec type_check_expr (exp: exp_node)(symbol_table: symtab)(function_table: fu
   | Ident(ident), _ -> (match lookup_symtab symbol_table ident with
                       | None -> exit(3) (* Fail when identifier is undefined in the symbol table*)
                       | Some(t) -> t)
+  | FunCallExp(x, arg_inits), c -> (match lookup_functiontab function_table x with 
+                                    |Some(FunDec(_,t,arg_decs,_,_)) -> type_check_funargs arg_inits arg_decs symbol_table function_table c;t 
+                                    | None -> exit(3))
   | Nil, _ -> Void_ty
-  | _, _ -> assert(false)
 
   and type_check_binop_expr (e1: exp_node) (e2: exp_node) (symbol_table: symtab) (function_table: functiontab) (c: context): ty_node= 
     match (type_check_expr e1 symbol_table function_table c), (type_check_expr e2 symbol_table function_table c) with
                        | Int_ty, Int_ty -> Int_ty
                        | _, _ -> exit(3) (* Fail when both operands are not Int_ty*)
 
-and  type_check_exprs (exprs: exp_node list)(symbol_table: symtab)(function_table: functiontab)(c: context) = 
-  match exprs, c with
-  | exp::rest, c -> ignore(type_check_expr (exp)(symbol_table)(function_table)(c)); type_check_exprs(rest)(symbol_table)(function_table)(c)
-  | [], _ -> assert(true);;
+and  type_check_funargs (arg_inits: exp_node list) (arg_decs: fundec_arg list)(symbol_table: symtab)(function_table: functiontab)(c:context): unit =
+match arg_inits, arg_decs with
+| exp::rest_init, FunDecArg(_, t)::rest_arg_decs -> (match type_check_expr exp symbol_table function_table c with 
+                                                    | t2 -> if t = t2 then assert(true) else exit(3));
+                                                    type_check_funargs rest_init rest_arg_decs symbol_table function_table c
+| [], [] -> assert(true)
+| _, _ -> exit(3)
 
 
 let rec type_check_stmt (stmt: stmt_node)(symbol_table: symtab)(function_table: functiontab)(c: context): unit = 
@@ -74,8 +83,9 @@ let rec type_check_stmt (stmt: stmt_node)(symbol_table: symtab)(function_table: 
                             | Some(t1), t2 -> if t1 = t2 then assert(true) else exit(3) (* Fail when type of rhs != lhs*)
                             | None, _ -> exit(3)(* Fail when a symbol is assigned before declaration *)
                             )
-
-  | _, _ -> assert(false)
+  | FunCallStmt(ident, arg_inits), c -> (match lookup_functiontab function_table ident with 
+                                |Some(FunDec(_,_,arg_decs,_,_)) -> type_check_funargs arg_inits arg_decs symbol_table function_table c;
+                                | None -> exit(3))
 
 and type_check_stmts (stmts: stmt_node list)(symbol_table: symtab)(function_table: functiontab)(c: context): unit = 
   match stmts, c with
