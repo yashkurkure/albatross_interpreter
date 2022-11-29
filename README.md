@@ -9,11 +9,9 @@ This is a work in progress.
 - [x] Lexer
 - [x] Parser
 - [x] AST
-- [ ] Create semantic rules for albatross
-- [ ] Semantic Analysis 
-- [ ] Big step/ Small step interpeter
-- [ ] Extension to support arrays
-- [ ] Extension to include a print system call
+- [ ] ~~Create semantic rules for albatross~~
+- [x] Semantic Analysis 
+- [ ] Evaluation
 
 ## Build Project 🚧
 ```
