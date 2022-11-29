@@ -43,6 +43,8 @@ let rec eval_stmts (stmts: stmt_node list)(globals: globtab)(c: context): unit =
 and eval_stmt (stmt: stmt_node)(globals: globtab)(c: context): unit = 
   match stmt, c with
   | Return(e), Glob_ct -> print_newline() ;exit(match eval_expr e globals c with Int(v) -> v | Void -> 0| String(_) -> exit(3) | Function(_)-> exit(3))
+  | FunCallStmt(x,e::[]), c when x = "exit"-> print_newline() ;exit(match eval_expr e globals c with Int(v) -> v | Void -> 0| String(_) -> exit(3) | Function(_)-> exit(3))
+  | FunCallStmt(x, e::[]), c when x = "printint" -> print_int(match eval_expr e globals c with Int(v) -> v | Void -> 0| String(_) -> exit(3) | Function(_)-> exit(3))
   | _, _ -> assert(false)
 
 let eval (p: program) = 
