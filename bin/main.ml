@@ -2,7 +2,6 @@ open Print_ast
 open Semantic_analysis.Type_checks
 open Semantic_analysis.Symbol_resolution
 
-
 let _ =
   let lexbuf = Sedlexing.Utf8.from_channel stdin in
   let lexer  = Sedlexing.with_tokenizer Lexer.token lexbuf in
