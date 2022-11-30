@@ -8,6 +8,7 @@ TIMEOUT=1s
 DIFF_FILE=d
 
 PASSING=0
+TOTAL_TESTS=0
 
 RED='\033[41;37m'
 GREEN='\033[42m'
@@ -92,6 +93,17 @@ do
     fi
 
     PASSING=$(($PASSING+$PASS))
+    ((TOTAL_TESTS+=1))
 done
 
 echo $PASSING
+echo $TOTAL_TESTS
+
+
+if [[ -z "${GITHUB_ENV}" ]]; 
+then
+    echo "FINISHED TESTS"
+else
+    echo "{PASSING_TESTS}={$PASSING}" >> $GITHUB_ENV
+    echo "{TOTAL_TESTS}={$TOTAL_TESTS}" >> $GITHUB_ENV
+fi
