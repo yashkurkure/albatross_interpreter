@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EXEC=_build/default/bin/main.exe
+EXEC=_build/default/bin/albatross.exe
 DUMMY=test
 OUTPUT=output
 TEST_DIR=tests
