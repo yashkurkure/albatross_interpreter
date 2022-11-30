@@ -3,6 +3,9 @@ name: Main workflow
 on:
   - pull_request
   - push
+  
+env:
+  DAY_OF_WEEK: Monday
 
 jobs:
   build:
@@ -32,7 +35,7 @@ jobs:
       - run: source runtests.sh
       
       - run: exit 1
-        if: ${{PASSING_TESTS}} != ${{TOTAL_TESTS}}
+        if: ${{ env.PASSING_TESTS }} != ${{ env.TOTAL_TESTS }}
       
       
 
