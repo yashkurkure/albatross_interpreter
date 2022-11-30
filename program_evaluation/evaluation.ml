@@ -75,6 +75,9 @@ and eval_stmt (stmt: stmt_node)(globals: globtab)(c: context): unit =
   | Return(e), Glob_ct -> print_newline() ;exit(match eval_expr e globals c with Int(v) -> v | Void -> 0| String(_) -> exit(3) | Function(_)-> exit(3))
   | FunCallStmt(x,e::[]), c when x = "exit"-> print_newline() ;exit(match eval_expr e globals c with Int(v) -> v | Void -> 0| String(_) -> exit(3) | Function(_)-> exit(3))
   | FunCallStmt(x, e::[]), c when x = "printint" -> print_int(match eval_expr e globals c with Int(v) -> v | Void -> 0| String(_) -> exit(3) | Function(_)-> exit(3))
+  | IfThenElse(e, thn, el), c -> (match eval_expr e globals c with 
+                              | Int(v) -> if v!=0 then eval_stmts thn globals c else eval_stmts el globals c 
+                              | _ -> exit(3))
   | _, _ -> assert(false)
 
 let eval (p: program) = 
