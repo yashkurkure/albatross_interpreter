@@ -32,7 +32,7 @@ jobs:
       
       - run: opam exec -- dune build
 
-      - run: source runtests.sh
+      - run: ./runtests.sh
       
       - run: exit 1
         if: ${{ env.PASSING_TESTS }} != ${{ env.TOTAL_TESTS }}
