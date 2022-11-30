@@ -21,7 +21,7 @@
  (name albatross_interpreter)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml dune)
+ (depends ocaml dune menhir sedlex)
  (tags
   (topics "to describe" your project)))
 
