@@ -1,28 +1,58 @@
 open Ast.Ast_nodes
 open Ast.Context
 open Global_table
- 
+
 let rec eval_expr (e: exp_node) (globals: globtab) (c: context): albatross_type = 
   match e, c with
   | Ident(_), _ -> assert(false)
-  | Add(e1, e2), _ -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+  | Add(e1, e2), c -> (match eval_expr e1 globals c, eval_expr e2 globals c with
                     | Int(v1), Int(v2) -> Int(v1+v2)
                     | _,_ -> exit(3))
-  | Sub(_, _), _  -> assert(false)
-  | Mul(_, _), _  -> assert(false)
-  | Div(_, _), _  -> assert(false)
-  | Rem(_, _), _  -> assert(false)
-  | BinOr(_, _), _  -> assert(false)
-  | BinAnd(_, _), _  -> assert(false)
-  | Xor(_, _), _  -> assert(false)
-  | Or(_, _), _  -> assert(false)
-  | And(_, _), _  -> assert(false)
-  | Leq(_, _), _  -> assert(false)
-  | Geq(_, _), _  -> assert(false)
-  | Less(_, _), _  -> assert(false)
-  | Greater(_, _), _  -> assert(false)
-  | Neq(_, _), _  -> assert(false)
-  | Eq(_, _), _  -> assert(false)
+  | Sub(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                    | Int(v1), Int(v2) -> Int(v1-v2)
+                    | _,_ -> exit(3))
+  | Mul(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                    | Int(v1), Int(v2) -> Int(v1*v2)
+                    | _,_ -> exit(3))
+  | Div(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                    | Int(v1), Int(v2) -> Int(v1/v2)
+                    | _,_ -> exit(3))
+  | Rem(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                      | Int(v1), Int(v2) -> Int(v1 - ((v1/v2)*v2))
+                      | _,_ -> exit(3))
+  | BinOr(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                        | Int(v1), Int(v2) -> Int(v1 lor v2)
+                        | _,_ -> exit(3))
+  | BinAnd(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                        | Int(v1), Int(v2) -> Int(v1 land v2)
+                        | _,_ -> exit(3))
+  | Xor(e1, e2), _  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                        | Int(v1), Int(v2) -> Int(v1 lxor v2)
+                        | _,_ -> exit(3))
+  | Or(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                  | Int(v1), Int(v2) -> Int( if (v1 != 0 || v2 != 0) then 1 else 0)
+                  | _,_ -> exit(3))
+  | And(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                  | Int(v1), Int(v2) -> Int( if (v1 != 0 && v2 != 0) then 1 else 0)
+                  | _,_ -> exit(3))
+  | Leq(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                  | Int(v1), Int(v2) -> Int( if (v1 <= v2) then 1 else 0)
+                  | _,_ -> exit(3))
+  | Geq(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                  | Int(v1), Int(v2) -> Int( if (v1 >= v2) then 1 else 0)
+                  | _,_ -> exit(3))
+  | Less(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                  | Int(v1), Int(v2) -> Int( if (v1 < v2) then 1 else 0)
+                  | _,_ -> exit(3))
+  | Greater(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                  | Int(v1), Int(v2) -> Int( if (v1 > v2) then 1 else 0)
+                  | _,_ -> exit(3))
+  | Neq(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                  | Int(v1), Int(v2) -> Int( if (v1 != v2) then 1 else 0)
+                  | _,_ -> exit(3))
+  | Eq(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
+                  | Int(v1), Int(v2) -> Int( if (v1 = v2) then 1 else 0)
+                  | _,_ -> exit(3))
   | Not(_), _  -> assert(false)
   | Int(v), _  -> Int(v)
   | String(v), _  -> String(v)
