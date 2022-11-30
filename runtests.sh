@@ -8,6 +8,7 @@ TIMEOUT=1s
 DIFF_FILE=d
 
 PASSING=0
+TOTAL_TESTS=0
 
 RED='\033[41;37m'
 GREEN='\033[42m'
@@ -29,7 +30,7 @@ do
         EXPECTED=$(sed 's/.albatross/.expected/g' <<<"$TESTFILE")
         cp $TESTFILE $DUMMY
         mv $EXEC.exe $EXEC &> /dev/null
-        (./$EXEC < $DUMMY) &> $OUTPUT
+        ./$EXEC < $DUMMY &> $OUTPUT
         RET=$?
         dos2unix $OUTPUT &> /dev/null
         dos2unix $EXPECTED &> /dev/null
@@ -42,6 +43,7 @@ do
             echo -e -n "${GREEN}RET OK${RESET}"
         else
             echo -e -n "${RED}RET FAIL${RESET}"
+            cat $DIFF_FILE
         fi
 
         if [ $DIFF -eq 0 ]
@@ -65,13 +67,14 @@ do
         echo -n $'\t'
         TESTFILE="$TEST_DIR/$T/$F"
         cp $TESTFILE $DUMMY
-        $((./$EXEC < $DUMMY) &> /dev/null)
+        $(./$EXEC < $DUMMY &> $DIFF_FILE)
         RET=$?
-        if [ $RET -ne 0 ]
+        if [ $RET -eq 3 ]
         then
             echo -e "${GREEN}RET OK${RESET}"
         else
             echo -e "${RED}RET FAIL${RESET}"
+            cat $DIFF_FILE
             #continue 2
             PASS=0
         fi
@@ -90,6 +93,17 @@ do
     fi
 
     PASSING=$(($PASSING+$PASS))
+    ((TOTAL_TESTS+=1))
 done
 
 echo $PASSING
+echo $TOTAL_TESTS
+
+
+if [[ -z "${GITHUB_ENV}" ]]; 
+then
+    echo "FINISHED TESTS"
+else
+    echo "{PASSING_TESTS}={$PASSING}" >> $GITHUB_ENV
+    echo "{TOTAL_TESTS}={$TOTAL_TESTS}" >> $GITHUB_ENV
+fi
