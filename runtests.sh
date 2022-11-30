@@ -102,8 +102,10 @@ echo $TOTAL_TESTS
 
 if [[ -z "${GITHUB_ENV}" ]]; 
 then
-    echo "FINISHED TESTS"
+    echo "Finished running tests"
 else
-    echo "{PASSING_TESTS}={$PASSING}" >> $GITHUB_ENV
-    echo "{TOTAL_TESTS}={$TOTAL_TESTS}" >> $GITHUB_ENV
+    echo "Finished running tests"
+    echo "Setting envrionment variables with test results.."
+    echo "PASSING_TESTS=$PASSING" >> $GITHUB_ENV
+    echo "TOTAL_TESTS=$TOTAL_TESTS" >> $GITHUB_ENV
 fi
