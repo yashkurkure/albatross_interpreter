@@ -25,15 +25,11 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
       
-      - name: Install Dune
       - run: opam install dune
 
-      - name: Dune - install
       - run: dune install
-      
-      - name: Dune - build
+
       - run: dune build
 
-      - name: Run test script
       - run: ./runtests.sh
 
