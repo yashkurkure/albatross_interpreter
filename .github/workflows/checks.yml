@@ -1,0 +1,38 @@
+name: Main workflow
+
+on:
+  - pull_request
+  - push
+  
+env:
+  DAY_OF_WEEK: Monday
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+        ocaml-compiler:
+          - 4.14.x
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use OCaml ${{ matrix.ocaml-compiler }}
+        uses: ocaml/setup-ocaml@v2
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+      
+      - run: opam install . --deps-only --with-test
+      
+      - run: opam exec -- dune build
+
+      - run: ./runtests.sh
+      
+      - run: exit 1
+        if: ${{ env.PASSING_TESTS }} != ${{ env.TOTAL_TESTS }}
