@@ -99,11 +99,5 @@ echo $PASSING
 echo $TOTAL_TESTS
 
 
-if [[ -z "${GITHUB_ENV}" ]]; 
-then
-    echo "FIinished all tests."
-else
-    echo "Setting env variables for github tests..."
-    echo "{PASSING_TESTS}={$PASSING}" >> $GITHUB_ENV
-    echo "{TOTAL_TESTS}={$TOTAL_TESTS}" >> $GITHUB_ENV
-fi
+echo "::set-env name=PASSING_TESTS::$PASSING"
+echo "::set-env name=TOTAL_TESTS::$TOTAL_TESTS"
