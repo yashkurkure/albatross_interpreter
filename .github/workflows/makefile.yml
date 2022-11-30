@@ -1,11 +1,8 @@
 name: Main workflow
 
 on:
-  pull_request:
-  push:
-  schedule:
-    # Prime the caches every Monday
-    - cron: 0 1 * * MON
+  - pull_request
+  - push
 
 jobs:
   build:
@@ -13,9 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - macos-latest
           - ubuntu-latest
-          - windows-latest
         ocaml-compiler:
           - 4.14.x
 
@@ -30,4 +25,9 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
 
+      - run: opam install . --deps-only --with-doc --with-test
+
+      - run: opam exec -- dune build
+
       - run: ./runtests.sh
+
