@@ -98,5 +98,11 @@ done
 echo $PASSING
 echo $TOTAL_TESTS
 
-export PASSING_TESTS=$PASSING
-export TOTAL_TESTS=$TOTAL_TESTS
+
+if [[ -z "${GITHUB_ENV}" ]]; 
+then
+    echo "FINISHED TESTS"
+else
+    echo "{PASSING_TESTS}={$PASSING}" >> $GITHUB_ENV
+    echo "{TOTAL_TESTS}={$TOTAL_TESTS}" >> $GITHUB_ENV
+fi
