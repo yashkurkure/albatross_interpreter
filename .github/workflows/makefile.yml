@@ -27,6 +27,8 @@ jobs:
       
       - run: opam install menhir
       
+      - run: opam install sedlex
+      
       - run: opam exec -- dune build
 
       - run: ./runtests.sh
