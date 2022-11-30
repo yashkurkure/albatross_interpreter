@@ -1,6 +1,10 @@
 open Stack_frame
 
+
+
 type stack = Stack of frame list;;
+
+let (+::+) (f:frame) (s:stack) : stack = match s with Stack(l) -> Stack(f::l)
 
 let empty_stack = Stack([]);;
 
@@ -21,3 +25,9 @@ let rec seeki (s: stack) (i: int): frame option =
   | _ -> None;;
 
 let rec seekbottom (s: stack): frame option = match s with Stack([]) -> None| Stack([f]) -> Some(f) | Stack(_::rest) -> seekbottom (Stack(rest))
+
+let rec update_glob_vartab (s: stack) (new_vt: vartab): stack = 
+  match s with 
+  | Stack([]) -> s
+  | Stack([Frame(c,_,res)]) -> Stack([Frame(c, new_vt, res)])
+  | Stack(e::rest) -> e +::+ (update_glob_vartab (Stack(rest)) new_vt)

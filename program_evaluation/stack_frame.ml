@@ -5,7 +5,7 @@ and vartab = string -> albatross_type option
 
 let empty_vartab = fun _ -> None
 
-let lookup_globtab (vartable: vartab) (x: string): albatross_type option = vartable x
+let lookup_vartab (vartable: vartab) (x: string): albatross_type option = vartable x
 
 let update_vartab (vartable: vartab) (x: string) (v: albatross_type) = fun y -> if y = x then Some(v) else vartable y
 
