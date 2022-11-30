@@ -27,9 +27,12 @@ jobs:
       
       - run: opam install . --deps-only --with-test
       
-      - name: Build
       - run: opam exec -- dune build
 
-      - name: Run test script
-      - run: ./runtests.sh
+      - run: source runtests.sh
+      
+      - run: exit 1
+        if: ${{PASSING_TESTS}} != ${{TOTAL_TESTS}}
+      
+      
 
