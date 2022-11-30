@@ -38,4 +38,5 @@ jobs:
         run: ./runtests.sh
       
       - name: Tests - Check all pass
-        run: if [[ ${{ env.PASSING_TESTS }} != ${{ env.TOTAL_TESTS }} ]]; then exit 1; else echo "ALL PASS"; fi
+        run: |
+          if [[ ${{ env.PASSING_TESTS }} != ${{ env.TOTAL_TESTS }} ]]; then exit 1; else echo "ALL PASS"; fi
