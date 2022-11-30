@@ -1,18 +1,33 @@
-name: GitHub Classroom Workflow
+name: Main workflow
 
-on: [push]
+on:
+  pull_request:
+  push:
+  schedule:
+    # Prime the caches every Monday
+    - cron: 0 1 * * MON
 
 jobs:
   build:
-    name: Autograding
-    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+        ocaml-compiler:
+          - 4.14.x
+
+    runs-on: ${{ matrix.os }}
+
     steps:
-      - name: Set up OCaml
-        uses: ocaml/setup-ocaml@v1.1.11
-      - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: sudo apt-get install -y flex bison
-      - name: Compile submission
-        run: make
-      - name: Run tests
-        run: ./runtests.sh
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use OCaml ${{ matrix.ocaml-compiler }}
+        uses: ocaml/setup-ocaml@v2
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+
+      - run: ./runtests.sh
