@@ -83,6 +83,12 @@ and [@warning "-21"] eval_stmt (stmt: stmt_node)(globals: globtab)(c: context): 
   | IfThenElse(e, thn, el), c -> (match eval_expr e globals c with 
                               | Int(v) -> if v!=0 then eval_stmts thn globals c else eval_stmts el globals c 
                               | _ -> exit(3))
+  | WhileOtherwise(e, b, o), c when o = []-> (match eval_expr e globals c with 
+                                  | Int(v)-> ( if v != 0 then (eval_stmt (WhileOtherwise(e, b, [])) (eval_stmts b globals c) c) else globals) 
+                                  | _ -> exit(3))
+  | WhileOtherwise(e, b, o), c when o != []-> (match eval_expr e globals c with 
+                                  | Int(v)-> ( if v != 0 then (eval_stmt (WhileOtherwise(e, b, [])) (eval_stmts b globals c) c) else eval_stmts o globals c) 
+                                  | _ -> exit(3))
   | Assign(x, e), Glob_ct-> (match eval_expr e globals c with
                             | vt -> update_globtab globals x vt)
   | Assign(_,_), Func_ct(_) -> assert(false) 
