@@ -3,9 +3,6 @@ name: Main workflow
 on:
   - pull_request
   - push
-  
-env:
-  DAY_OF_WEEK: Monday
 
 jobs:
   build:
@@ -28,14 +25,18 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
       
-      - run: opam install . --deps-only --with-test
+      - name: Opam - Install dependencies
+        run: opam install . --deps-only --with-test
       
-      - run: opam exec -- dune build
+      - name: Opam - Build [Dune]
+        run: opam exec -- dune build
 
+      - name: Run test script
       - run: ./runtests.sh
       
-      - run: exit 1
+      - name: Tests ALL PASS
         if: ${{ env.PASSING_TESTS }} != ${{ env.TOTAL_TESTS }}
+        run: echo $PASSING_TESTS; echo $TOTAL_TESTS
       
       
 
