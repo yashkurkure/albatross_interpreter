@@ -95,8 +95,8 @@ do
     PASSING=$(($PASSING+$PASS))
 done
 
-echo $PASSING
-echo $TOTAL_TESTS
+echo "Passing tests: $PASSING"
+echo "Total tests: $TOTAL_TESTS"
 
 
 if [[ -z "${GITHUB_ENV}" ]]; 
