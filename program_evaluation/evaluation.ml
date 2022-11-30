@@ -53,7 +53,9 @@ let rec eval_expr (e: exp_node) (globals: globtab) (c: context): albatross_type 
   | Eq(e1, e2), c  -> (match eval_expr e1 globals c, eval_expr e2 globals c with
                   | Int(v1), Int(v2) -> Int( if (v1 = v2) then 1 else 0)
                   | _,_ -> exit(3))
-  | Not(_), _  -> assert(false)
+  | Not(e), _  -> (match eval_expr e globals c with
+                  | Int(v)-> Int( if (v!=0) then 0 else 1)
+                  | _-> exit(3))
   | Int(v), _  -> Int(v)
   | String(v), _  -> String(v)
   | FunCallExp(_, _), _  -> assert(false)
