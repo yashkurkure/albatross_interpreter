@@ -25,13 +25,9 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
       
-      - run: opam install dune
+      - run: opam install menhir
       
-      - run: eval $(opam env)
-
-      - run: dune install
-
-      - run: dune build
+      - run: opam exec -- dune build
 
       - run: ./runtests.sh
 
