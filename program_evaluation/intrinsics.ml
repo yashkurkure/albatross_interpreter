@@ -9,6 +9,8 @@ let register_intrinsics (p: program): program =
                                             ::
                                             FunDec("printint", Void_ty, [FunDecArg("x", Int_ty)], [], [Return(Nil)])
                                             ::
+                                            FunDec("printstring", Void_ty, [FunDecArg("x", String_ty)], [], [Return(Nil)])
+                                            ::
                                             funs
                                           ), 
                                           stmts
