@@ -31,12 +31,11 @@ jobs:
       - name: Opam - Build [Dune]
         run: opam exec -- dune build
 
-      - name: Run test script
+      - name: Tests - Run test script
         run: ./runtests.sh
       
-      - name: Tests ALL PASS
-        if: ${{ env.PASSING_TESTS }} != ${{ env.TOTAL_TESTS }}
-        run: exit 1
+      - name: Tests - Check all pass
+        run: if [[ $PASSING_TESTS != $TOTAL_TESTS ]]; then exit 1; else echo "ALL PASS"; fi
       
       
 
