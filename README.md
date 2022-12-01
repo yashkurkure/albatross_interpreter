@@ -33,7 +33,7 @@ Try executing the programs in `./examples`.
 
 ```bash
 # factorial.albatross prints the factorials of 1-15
-./albatross.exe ./examples/factorial.albatross
+./albatrossin.exe ./examples/factorial.albatross
 
 
 # pattern.albatross prints a * pattern
