@@ -55,6 +55,7 @@ let rec eval_expr (e: exp_node) (s: stack) (ft: functiontab): stack =
                                                                                 )
                                     | None -> assert(false) 
                                    )
+  | Nil, _ ->  push s (ExpResult(Void))
   | _ ,_-> assert(false)
 and eval_binop_expr (e1: exp_node) (e2: exp_node) (s: stack) (f: functiontab) (op: int->int->int): stack = 
   let s1 = eval_expr e1 s f in 
@@ -83,6 +84,7 @@ and eval_stmt (stmt: stmt_node) (s: stack) (ft: functiontab): stack =
   | Return(e), Some(Frame(Glob_ct, _, _)) -> (let v = (match seektop (eval_expr e s ft) with
                                                       | Some(ExpResult(Int(v)))
                                                       | Some(Frame(_,_, Some(Int(v))))-> v
+                                                      | Some(ExpResult(Void)) -> 0
                                                       | _ -> assert(false)) 
                                               in (
                                                   print_newline();
@@ -151,6 +153,25 @@ and eval_stmt (stmt: stmt_node) (s: stack) (ft: functiontab): stack =
                                                                                     )
                                                     | _ -> assert(false)
                                                   )
+  | FunCallStmt(x, args_init), _ -> let s1 = (match lookup_functiontab ft x with
+                                    | Some(FunDec(_,_,arg_names,locs,stmts)) -> (eval_stmts 
+                                                                                  (stmts)
+                                                                                  (
+                                                                                    add_function_locs_vartab
+                                                                                    locs
+                                                                                    (
+                                                                                      add_function_args_vartab
+                                                                                      arg_names
+                                                                                      args_init
+                                                                                      (push s (Frame(Func_ct(x), empty_vartab, None)))
+                                                                                      ft
+                                                                                    )
+                                                                                    ft
+                                                                                  )
+                                                                                  (ft)
+                                                                                )
+                                    | None -> assert(false) 
+                                   ) in pop s1
   | _,_ -> assert(false)
 
 and add_function_args_vartab (args_names: fundec_arg list) (args_inits: exp_node list)(s:stack)(ft: functiontab): stack = 

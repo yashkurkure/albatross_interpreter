@@ -12,5 +12,5 @@ let _ =
   let (symbol_table, function_table) = symbol_resolution result in
     type_check result symbol_table function_table;
     eval result function_table ;
-    print_string "end"
+    print_string "\n";
   )
