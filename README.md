@@ -1,64 +1,85 @@
-# Albatross Interpreter
+Albatross Interpreter
 
-This is an interpreter written in Ocaml using sedlex and menhir. The project uses dune as the build system.
+An interpreter for the ***albatross programming language*** developed in CS473: Compiler Design - Fall 22 and CS476: Programming Language Design - Fall 22 at UIC.
 
-# Project Milestones
-This is a work in progress.
-- [x] Dune Build System
-- [x] ocamllex/sedlex and ocamlyacc/menhir
-- [x] Lexer
-- [x] Parser
-- [x] AST
-- [ ] ~~Create semantic rules for albatross~~
-- [x] Semantic Analysis 
-- [x] Evaluation
+The interpreter is written using OCaml that uses sedlex (Lexer) and Menhir (LR(1) parser) opam packages.
 
-## Build Project 🚧
-```
-make
-//or
-dune build @all
-```
+The interpreter works in stages:
 
-## Clean Project 🧹
-```
-make clean
-//or
-dune clean
-```
+- Lexing: extracting tokens
+  
+- Parsing: checking program syntax
+  
+  - AST generation
+    
+- Semantic analysis
+  
+  - Symbol resolution
+    
+  - Type checking
+    
+- Program evaluation: executes the program
+  
 
-## Run Parser 🏃
+## Usage
 
-```
-dune exec albatross_interpreter
-```
-or
-```
-make run
-```
-Then type the program on the command line, hit enter and press CTRL+D.
+Use the `albatrossin.exe` binary to execute programs.
 
-## Run Parser (Input in file) 🏃 + 📄
-You can also pass it a program as a file:
-```
-dune exec albatross_interpreter < program.albatross
+```bash
+./albatross.exe <program.albatross>
 ```
 
-## Testing
+Try executing the programs in `./examples`.
 
-Use the `runtests.sh` script for testing.
+```bash
+# factorial.albatross prints the factorials of 1-15
+./albatross.exe ./examples/factorial.albatross
 
+
+# pattern.albatross prints a * pattern
+./albatrossin.exe ./examples/pattern.albatross
 ```
-./runtests.sh
+
+## Build Executable 🚧
+
+###### Prerequisites
+
+Ocaml/Opam: [Get Up and Running With OCaml · OCaml Tutorials](https://ocaml.org/docs/up-and-running)
+
+Dune Build: [Install Dune](https://dune.build/install)
+
+###### Build
+
+Clone the project and cd into the project root:
+
+```bash
+clone git@github.com:yashkurkure/albatross_interpreter.git
+cd ./albatross_interpreter
 ```
-Look into the `/tests` directory to view the tests files and the expected outputs.
 
-You can run tests individually like:
+Build using Opam:
 
+```bash
+# Install project dependencies
+opam install . --deps-only --with-test
+
+# Build the project
+opam exec -- dune build
 ```
-// run test 01
-./runtests "01"
 
-// run tests 01 and 04
-./runtests "01|04"
+Alternaitvely, build using Dune:
+
+```bash
+# Install project dependencies and build project
+dune build
+```
+
+Building the project will create `albatrossin.exe` in the root of the project.
+
+## Executing using Dune 🏃
+
+You can build and execute the project at once using dune.
+
+```bash
+dune exec albatrossin <program.albatross>
 ```
