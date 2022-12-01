@@ -2,7 +2,7 @@
 
 This is an interpreter written in Ocaml using sedlex and menhir. The project uses dune as the build system.
 
-# IN PROGRESS ⚠️
+# Project Milestones
 This is a work in progress.
 - [x] Dune Build System
 - [x] ocamllex/sedlex and ocamlyacc/menhir
@@ -11,7 +11,7 @@ This is a work in progress.
 - [x] AST
 - [ ] ~~Create semantic rules for albatross~~
 - [x] Semantic Analysis 
-- [ ] Evaluation
+- [x] Evaluation
 
 ## Build Project 🚧
 ```
