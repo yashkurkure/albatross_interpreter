@@ -39,6 +39,7 @@ Try executing the programs in `./examples`.
 # pattern.albatross prints a * pattern
 ./albatrossin.exe ./examples/pattern.albatross
 ```
+Note that the dune build system adds the `.exe` extension to the executable to maintain consistency accross Windows, Linux and MacOS. The extension `.exe` is meaningless to Linux and MacOS, but Windows requires it for executables.
 
 ## Build Executable 🏗️
 
