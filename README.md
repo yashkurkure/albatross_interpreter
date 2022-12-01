@@ -4,21 +4,21 @@ An interpreter for the ***albatross programming language*** developed in CS473: 
 
 The interpreter is written using OCaml that uses sedlex (Lexer) and Menhir (LR(1) parser) opam packages.
 
-The interpreter works in stages:
+The interpreter works in 4 stages:
 
-- 1. Lexing: extracting tokens
+1. Lexing: extracting tokens
   
-- 2. Parsing: checking program syntax
+2. Parsing: checking program syntax
   
   - AST generation
     
-- 3. Semantic analysis
+3. Semantic analysis
   
   - Symbol resolution
     
   - Type checking
     
-- 4. Program evaluation: executes the program
+4. Program evaluation: executes the program
   
 
 ## Usage
