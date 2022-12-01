@@ -88,7 +88,9 @@ dune exec albatrossin <program.albatross>
 
 You can run test scipts for testing the parser, semantic analysis and execution stages.
 
-The branches of this repository `lexer_and_parser`, `semantic_analysis` and `master` are symbolic to the stages this interpreter was developed in (`master` branch has everything till the execution stage). Each branch has a `./runtests.sh` script which executes the programs in the `./tests` and compares the output with the expected output.
+The branches of this repository `lexer_and_parser`, `semantic_analysis` and `master` are symbolic to the stages this interpreter was developed in (`master` branch has everything till the execution stage). 
+
+Each branch has a `runtests.sh` script which executes the programs in the `./tests` and compares the output with the expected output.
 
 This repository also has github actions configured to run on `push` the `runtests.sh` script and check if all tests pass.
 
