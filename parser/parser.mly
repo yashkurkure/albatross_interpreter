@@ -35,13 +35,13 @@
 %token TYPE_INT
 %token TYPE_STRING
 %token TYPE_VOID
-%token TYPE_CHAR
+//%token TYPE_CHAR - for char types support
 %token LEFT_PARENTHESIS
 %token RIGHT_PARENTHESIS
 %token LEFT_CURLY
 %token RIGHT_CURLY
-%token LEFT_BRACKET
-%token RIGHT_BRACKET
+//%token LEFT_BRACKET - for array support
+//%token RIGHT_BRACKET - for array support
 %token SEMICOLON
 %token ASSIGNMENT
 %token COMMA

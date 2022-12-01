@@ -83,7 +83,7 @@ let rec token buf =
   | '/' -> debug_print "RETURN";DIVISION
   | "int" -> debug_print "TYPE_INT";TYPE_INT
   | "string" -> debug_print "TYPE_STRING";TYPE_STRING
-  | "char" -> debug_print "TYPE_CHAR";TYPE_CHAR
+  | "char" -> debug_print "TYPE_CHAR"; failwith "albatross does not support char types"
   | "void" -> debug_print "TYPE_VOID";TYPE_VOID
   | name -> debug_print "NAME";NAME (Sedlexing.Latin1.lexeme buf)
   | int_constant -> debug_print "INT_CONSTANT"; INT_CONSTANT (Sedlexing.Latin1.lexeme buf)
@@ -92,8 +92,8 @@ let rec token buf =
   | ')' -> debug_print "RPAREN";RIGHT_PARENTHESIS
   | '{' -> debug_print "LCURLY";LEFT_CURLY
   | '}' -> debug_print "RCURLY";RIGHT_CURLY
-  | '[' -> debug_print "RETURN";LEFT_BRACKET
-  | ']' -> debug_print "RETURN";RIGHT_BRACKET
+  | '[' -> debug_print "RETURN";failwith "Invalid character: ["
+  | ']' -> debug_print "RETURN";failwith "Invalid character: ]"
   | ';' -> debug_print "SEMICOLON";SEMICOLON
   | ":=" -> debug_print "ASSIGNMENT";ASSIGNMENT
   | ',' -> debug_print "COMMA";COMMA
