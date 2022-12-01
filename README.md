@@ -1,4 +1,4 @@
-Albatross Interpreter
+# Albatross Interpreter
 
 An interpreter for the ***albatross programming language*** developed in CS473: Compiler Design - Fall 22 and CS476: Programming Language Design - Fall 22 at UIC.
 
@@ -6,19 +6,19 @@ The interpreter is written using OCaml that uses sedlex (Lexer) and Menhir (LR(1
 
 The interpreter works in stages:
 
-- Lexing: extracting tokens
+- 1. Lexing: extracting tokens
   
-- Parsing: checking program syntax
+- 2. Parsing: checking program syntax
   
   - AST generation
     
-- Semantic analysis
+- 3. Semantic analysis
   
   - Symbol resolution
     
   - Type checking
     
-- Program evaluation: executes the program
+- 4. Program evaluation: executes the program
   
 
 ## Usage
@@ -40,7 +40,7 @@ Try executing the programs in `./examples`.
 ./albatrossin.exe ./examples/pattern.albatross
 ```
 
-## Build Executable 🚧
+## Build Executable 🏗️
 
 ###### Prerequisites
 
@@ -83,3 +83,11 @@ You can build and execute the project at once using dune.
 ```bash
 dune exec albatrossin <program.albatross>
 ```
+## Testing
+
+You can run test scipts for testing the parser, semantic analysis and execution stages.
+
+The branches of this repository `lexer_and_parser`, `semantic_analysis` and `master` are symbolic to the stages this interpreter was developed in (`master` branch has everything till the execution stage). Each branch has a `./runtests.sh` script which executes the programs in the `./tests` and compares the output with the expected output.
+
+This repository also has github actions configured to run on `push` the `runtests.sh` script and check if all tests pass.
+
