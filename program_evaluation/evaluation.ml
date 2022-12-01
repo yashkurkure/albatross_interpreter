@@ -223,11 +223,11 @@ and add_function_args_vartab (args_names: fundec_arg list) (args_inits: exp_node
 
 and add_function_locs_vartab (vardecs: vardec_node list) (s:stack)(ft: functiontab): stack = 
   match vardecs with
-  | VarDec(x, _, e)::rest -> let s1 = eval_expr e (pop s) ft in (
+  | VarDec(x, _, e)::rest -> let s1 = eval_expr e s ft in (
                                   match seektop s1 with
                                   | Some(ExpResult(v)) 
-                                  | Some(Frame(_,_, Some(v))) -> (match seektop s with
-                                                                | Some(Frame(c,vt,res)) -> add_function_locs_vartab rest (push (pop s) (Frame(c, update_vartab vt x v, res))) ft
+                                  | Some(Frame(_,_, Some(v))) -> (match seektop (pop s1) with
+                                                                | Some(Frame(c,vt,res)) -> add_function_locs_vartab rest (push (pop s1) (Frame(c, update_vartab vt x v, res))) ft
                                                                 | _ -> assert(false))
                                   | _ -> assert(false)
                                  )
