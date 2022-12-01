@@ -5,14 +5,14 @@ let debug_print (s:string) =
   if debug then (print_string s; print_newline())
 
 
-let explode (s: string): char list =
+let explode_str (s: string): char list =
   let rec exp i l =
     if i < 0 then l else exp (i - 1) (s.[i] :: l) in
   exp (String.length s - 1) []
 
-let rec implode (l: char list) : string = 
+let rec implode_str (l: char list) : string = 
   match l with
-  | hd::tl -> (String.make 1 hd) ^ (implode tl)
+  | hd::tl -> (String.make 1 hd) ^ (implode_str tl)
   | [] -> ""
 
 
@@ -27,12 +27,12 @@ let rec _unescape (l: char list): char list=
   | [] -> []
 
 let unescape (s:string) = 
-  implode (_unescape (explode s))
+  implode_str (_unescape (explode_str s))
 
 let stripQuotes str = 
-  match explode str with
+  match explode_str str with
   | '\"'::rest -> (match List.rev rest with
-                  | '\"'::rrest -> implode (List.rev rrest)
+                  | '\"'::rrest -> implode_str (List.rev rrest)
                   | _ -> str)
   | _ ->  str
   
@@ -101,20 +101,3 @@ let rec token buf =
   | Plus (Chars " \t") -> token buf
   | eof -> EOF
   | _ -> debug_print (Sedlexing.Latin1.lexeme buf); failwith "Unexpected character"
-
-
-(* let rec token buf =
-  match%sedlex buf with
-  | Plus (Chars " \t") -> token buf
-  | '\n' ->   EOL
-  | number -> INT_CONSTANT (Sedlexing.Latin1.lexeme buf)
-  | '+' -> PLUS
-  | '-' -> MINUS
-  | '*' -> TIMES
-  | '/' -> DIV
-  | '(' -> LPAREN
-  | ')' -> RPAREN
-  | ';' -> SEMICOLON
-  | "return" -> RETURN
-  | eof -> raise Eof
-  | _ -> failwith "Unexpected character" *)
