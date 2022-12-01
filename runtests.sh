@@ -30,7 +30,7 @@ do
         EXPECTED=$(sed 's/.albatross/.expected/g' <<<"$TESTFILE")
         cp $TESTFILE $DUMMY
         mv $EXEC.exe $EXEC &> /dev/null
-        ./$EXEC < $DUMMY &> $OUTPUT
+        ./$EXEC $DUMMY &> $OUTPUT
         RET=$?
         dos2unix $OUTPUT &> /dev/null
         dos2unix $EXPECTED &> /dev/null
@@ -67,7 +67,7 @@ do
         echo -n $'\t'
         TESTFILE="$TEST_DIR/$T/$F"
         cp $TESTFILE $DUMMY
-        $(./$EXEC < $DUMMY &> $DIFF_FILE)
+        $(./$EXEC $DUMMY &> $DIFF_FILE)
         RET=$?
         if [ $RET -eq 3 ]
         then
@@ -94,6 +94,7 @@ do
 
     PASSING=$(($PASSING+$PASS))
 done
+rm $DIFF_FILE
 
 echo "Passing tests: $PASSING"
 echo "Total tests: $TOTAL_TESTS"
