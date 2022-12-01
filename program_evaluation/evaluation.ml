@@ -138,13 +138,13 @@ and eval_stmt (stmt: stmt_node) (s: stack) (ft: functiontab): stack =
                                                       | Some(ExpResult(Int(v)))
                                                       | Some(Frame(_,_, Some(Int(v))))-> v
                                                       | _ -> assert(false)) 
-                                              in print_int v
+                                              in Printf.printf "%d" v
                                               );pop s1
   | FunCallStmt("printstring", [e]), Some(Frame(_, _,_)) ->  let s1 = eval_expr e s ft in (let v = (match seektop s1 with
                                                       | Some(ExpResult(String(v)))
                                                       | Some(Frame(_,_, Some(String(v)))) -> v
                                                       | _ -> assert(false)) 
-                                              in print_string v
+                                              in Printf.printf "%s" v
                                               );pop s1
   | IfThenElse(e, thn, el), _ -> let s1 = eval_expr e s ft in 
                                  (

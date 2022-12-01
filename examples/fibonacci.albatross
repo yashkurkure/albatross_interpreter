@@ -1,0 +1,27 @@
+fun main void () {
+    
+    var n int := 10;
+    var i int := 0;
+    printstring("First 10 fibonacci numbers:\n");
+    while(i < n) {
+        printint(fibonacciNumbers(i));
+        printstring(" ");
+        i := i + 1;
+    }
+}
+
+fun fibonacciNumbers int (n int)
+{
+    if(n == 0){
+        return 0;
+    } else {
+
+        if(n == 1){
+            return 1;
+        } else {
+            return fibonacciNumbers(n-2) + fibonacciNumbers(n-1);
+        }
+    }
+}
+
+main();

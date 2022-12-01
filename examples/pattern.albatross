@@ -1,0 +1,66 @@
+
+
+fun main void () {
+    var sides int := 5;
+    pattern(sides);
+}
+
+fun pattern void (n int) {
+
+    var i int := 0;
+    var j int := 0;
+
+    i := 1;
+    while(i <= n) {
+
+        j := 1;
+        while(j <= (2 * n)) {
+
+            if(i > (n - j + 1)) {
+                printstring(" ");
+            } else {
+                printstring("*");
+            }
+
+            if((i + n) > j) {
+                printstring(" ");
+            } else {
+                printstring("*");
+            }
+
+            j := j + 1;
+        }
+
+        printstring("\n");
+
+        i := i + 1;
+    }
+
+    i := 1;
+    while(i <= n) {
+
+        j := 1;
+        while(j <= (2 * n)) {
+
+            if(i < j) {
+                printstring(" ");
+            } else {
+                printstring("*");
+            }
+
+            if(i <= ((2 * n) - j)) {
+                printstring(" ");
+            } else {
+                printstring("*");
+            }
+
+            j := j + 1;
+        }
+
+        printstring("\n");
+
+        i := i + 1;
+    }
+}
+
+main();
