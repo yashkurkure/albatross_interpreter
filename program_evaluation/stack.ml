@@ -26,8 +26,14 @@ let rec seeki (s: stack) (i: int): frame option =
 
 let rec seekbottom (s: stack): frame option = match s with Stack([]) -> None| Stack([f]) -> Some(f) | Stack(_::rest) -> seekbottom (Stack(rest))
 
-let rec update_glob_vartab (s: stack) (new_vt: vartab): stack = 
+let rec update_glob_vartab (s: stack) (x: string) (v: albatross_type): stack = 
   match s with 
   | Stack([]) -> s
-  | Stack([Frame(c,_,res)]) -> Stack([Frame(c, new_vt, res)])
-  | Stack(e::rest) -> e +::+ (update_glob_vartab (Stack(rest)) new_vt)
+  | Stack([Frame(Glob_ct,vt,res)]) -> Stack([Frame(Glob_ct, (update_vartab vt x v), res)])
+  | Stack(e::rest) -> match (update_glob_vartab (Stack(rest)) x v) with Stack(l) -> Stack(e::l)
+
+let rec look_glob_vartab (s: stack) (x: string) : albatross_type option = 
+  match s with 
+  | Stack([]) -> None
+  | Stack([Frame(_,vt,_)]) -> lookup_vartab vt x
+  | Stack(_::rest) -> look_glob_vartab (Stack(rest)) x
