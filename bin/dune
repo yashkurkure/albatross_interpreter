@@ -1,6 +1,7 @@
 (executable
- (public_name albatross)
- (name albatross)
+ (public_name albatrossin)
+ (name albatrossin)
  (libraries sedlex menhirLib lexer parser ast semantic_analysis print_ast program_evaluation)
  (preprocess (pps sedlex.ppx))
+ (promote (into ../))
 )
