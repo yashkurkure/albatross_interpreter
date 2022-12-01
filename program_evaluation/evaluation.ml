@@ -21,8 +21,34 @@ let rec eval_expr (e: exp_node) (s: stack) (ft: functiontab): stack =
   | BinOr(e1, e2), _ ->  eval_binop_expr e1 e2 s ft (fun v1 v2 -> v1 lor v2)
   | BinAnd(e1, e2), _ ->  eval_binop_expr e1 e2 s ft (fun v1 v2 -> v1 land v2)
   | Xor(e1, e2), _ ->  eval_binop_expr e1 e2 s ft (fun v1 v2 -> v1 lxor v2)
-  | Or(e1, e2), _ ->  eval_binop_expr e1 e2 s ft (fun v1 v2 -> if(v1!=0||v2!=0) then 1 else 0)
-  | And(e1, e2), _ ->  eval_binop_expr e1 e2 s ft (fun v1 v2 -> if(v1!=0&&v2!=0) then 1 else 0)
+  | Or(e1, e2), _ ->  let s1 = eval_expr e1 s ft in 
+                      (
+                        match seektop s1 with
+                        | Some(ExpResult(Int(v1))) 
+                        | Some(Frame(_,_, Some(Int(v1)))) when v1 == 0 -> (let s2 = eval_expr e2 (pop s1) ft in (
+                                                      match seektop s2 with
+                                                      | Some(ExpResult(Int(v2))) -> push (pop s2) (ExpResult(Int(if v2==0 then 0 else 1)))
+                                                      | Some(Frame(_,_, Some(Int(v2)))) -> push (pop s2) (ExpResult(Int(if v2==0 then 0 else 1)))
+                                                      | _ -> assert(false)
+                                                      ))
+                        | Some(ExpResult(Int(v1))) 
+                        | Some(Frame(_,_, Some(Int(v1)))) when v1 != 0 -> push (pop s1) (ExpResult(Int(if v1==0 then 0 else 1)))
+                        | _ -> assert(false)
+                      )
+  | And(e1, e2), _ ->  let s1 = eval_expr e1 s ft in 
+                      (
+                        match seektop s1 with
+                        | Some(ExpResult(Int(v1))) 
+                        | Some(Frame(_,_, Some(Int(v1)))) when v1!=0 -> (let s2 = eval_expr e2 (pop s1) ft in (
+                                                      match seektop s2 with
+                                                      | Some(ExpResult(Int(v2))) -> push (pop s2) (ExpResult(Int(if v2!=0 then 1 else 0)))
+                                                      | Some(Frame(_,_, Some(Int(v2)))) -> push (pop s2) (ExpResult(Int(if v2!=0 then 1 else 0)))
+                                                      | _ -> assert(false)
+                                                      ))
+                        | Some(ExpResult(Int(v1))) 
+                        | Some(Frame(_,_, Some(Int(v1)))) when v1==0 -> push (pop s1) (ExpResult(Int(0)))
+                        | _ -> assert(false)
+                      )
   | Leq(e1, e2), _ ->  eval_binop_expr e1 e2 s ft (fun v1 v2 -> if(v1 <= v2) then 1 else 0)
   | Geq(e1, e2), _ ->  eval_binop_expr e1 e2 s ft (fun v1 v2 -> if(v1 >= v2) then 1 else 0)
   | Less(e1, e2), _ ->  eval_binop_expr e1 e2 s ft (fun v1 v2 -> if(v1 < v2) then 1 else 0)
@@ -46,7 +72,7 @@ let rec eval_expr (e: exp_node) (s: stack) (ft: functiontab): stack =
                                                                                       add_function_args_vartab
                                                                                       arg_names
                                                                                       args_init
-                                                                                      (push s (Frame(Func_ct(x), empty_vartab, None)))
+                                                                                      (push s (Frame(Func_ct(x), empty_vartab, None))) (* Push frame after args are evaled*)
                                                                                       ft
                                                                                     )
                                                                                     ft
@@ -172,14 +198,22 @@ and eval_stmt (stmt: stmt_node) (s: stack) (ft: functiontab): stack =
                                                                                 )
                                     | None -> assert(false) 
                                    ) in pop s1
+  | Repeat(e, stmts), _ -> let s1 = eval_expr e s ft in (
+                            match seektop s1 with
+                            | Some(ExpResult(Int(v))) 
+                            | Some(Frame(_,_, Some(Int(v)))) -> if (v!=0) 
+                                                                then eval_stmt (Repeat(Int(v-1),stmts)) (eval_stmts stmts (pop s1) ft) ft 
+                                                                else pop s1
+                            | _ -> assert(false)
+                          )
   | _,_ -> assert(false)
 
 and add_function_args_vartab (args_names: fundec_arg list) (args_inits: exp_node list)(s:stack)(ft: functiontab): stack = 
   match args_names, args_inits with
-  | FunDecArg(x,_)::rest, e::erest -> let s1 = eval_expr e s ft in (
+  | FunDecArg(x,_)::rest, e::erest -> let s1 = eval_expr e (pop s) ft in (
                                   match seektop s1 with
                                   | Some(ExpResult(v)) 
-                                  | Some(Frame(_,_, Some(v))) -> (match seektop (pop s1) with
+                                  | Some(Frame(_,_, Some(v))) -> (match seektop s with
                                                                  | Some(Frame(c,vt,res)) -> add_function_args_vartab rest erest (push (pop s1) (Frame(c, update_vartab vt x v, res))) ft
                                                                  | _ -> assert(false)) 
                                   | _ -> assert(false)
@@ -189,11 +223,11 @@ and add_function_args_vartab (args_names: fundec_arg list) (args_inits: exp_node
 
 and add_function_locs_vartab (vardecs: vardec_node list) (s:stack)(ft: functiontab): stack = 
   match vardecs with
-  | VarDec(x, _, e)::rest -> let s1 = eval_expr e s ft in (
+  | VarDec(x, _, e)::rest -> let s1 = eval_expr e (pop s) ft in (
                                   match seektop s1 with
                                   | Some(ExpResult(v)) 
-                                  | Some(Frame(_,_, Some(v))) -> (match seektop (pop s1) with
-                                                                | Some(Frame(c,vt,res)) -> add_function_locs_vartab rest (push (pop s1) (Frame(c, update_vartab vt x v, res))) ft
+                                  | Some(Frame(_,_, Some(v))) -> (match seektop s with
+                                                                | Some(Frame(c,vt,res)) -> add_function_locs_vartab rest (push (pop s) (Frame(c, update_vartab vt x v, res))) ft
                                                                 | _ -> assert(false))
                                   | _ -> assert(false)
                                  )
