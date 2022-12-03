@@ -82,11 +82,11 @@ and symbol_resolution_var (var: vardec_node) (symbol_table: symtab) (function_ta
 
 (* Adds the arguments of the function to the symbol table. 
     This is always called before performing symbol resolution on the function's body. *)
-let rec add_function_args_symtab (funargs: fundec_arg list) (symbol_table: symtab): symtab = 
+let rec add_function_args_symtab (f: string) (funargs: fundec_arg list) (symbol_table: symtab): symtab = 
   match funargs with
   | FunDecArg(x,t)::rest -> (match lookup_symtab symbol_table x with
-                            | Some(_) -> Printf.eprintf "[SymRes] Duplicate symbol %s in the arguments of function declaration.\n" x;exit(3) (* Fail when arg has the same name as some global variable*)
-                            | None -> add_function_args_symtab (rest) (update_symtab symbol_table x t))
+                            | Some(_) -> Printf.eprintf "[SymRes] Duplicate symbol %s in the arguments of function %s.\n" x f;exit(3) (* Fail when arg has the same name as some global variable*)
+                            | None -> add_function_args_symtab f (rest) (update_symtab symbol_table x t))
   | [] -> symbol_table
 
 
@@ -113,7 +113,7 @@ and symbol_resolution_function (fundec: fundec_node) (symbol_table:symtab) (func
   match fundec with FunDec(x,_,args,vars,stmts)-> (
 
     (*Add the args to the symbol table.*)
-    let args_sym_table = add_function_args_symtab args symbol_table in
+    let args_sym_table = add_function_args_symtab x args symbol_table in
     (*Add the vairables to the symbol table.*)
     let args_locs_sym_table = symbol_resolution_vars vars args_sym_table function_table (Func_ct(x)) in
     (*Perform symbol resolution on the function body.*)

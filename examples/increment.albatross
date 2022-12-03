@@ -1,0 +1,15 @@
+var x int := 0;
+
+fun increment int (y int) {
+    return y + 1;
+}
+
+fun main void () {
+
+    while (x < 10) {
+        printint(x);
+        x := increment(x);
+    }
+}
+
+main();
