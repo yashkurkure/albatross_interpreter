@@ -1,3 +1,6 @@
+(* AST node definitions *)
+
+
 type exp_node=
   Add     of exp_node * exp_node
 | Sub     of exp_node * exp_node
@@ -31,6 +34,12 @@ type stmt_node =
 | FunCallStmt         of string * (exp_node list)
 
 type ty_node = Int_ty | String_ty | Void_ty
+
+let ty_node_to_str (t: ty_node): string = 
+  match t with
+  | Int_ty -> "int"
+  | String_ty -> "string"
+  | Void_ty -> "void";;
 
 type vardec_node = VarDec of string * ty_node * exp_node
 

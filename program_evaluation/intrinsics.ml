@@ -1,5 +1,6 @@
 open Ast.Ast_nodes
 
+(* Register the intrinsics*)
 let register_intrinsics (p: program): program = 
   match p with
   | Program(vars, funs, stmts) -> Program(

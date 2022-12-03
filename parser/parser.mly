@@ -1,12 +1,13 @@
-/* File parser.mly (unchanged) */
+(* A parser implementation using menhir *)
+
 %{
     open Ast.Ast_nodes
 %}
 
+(* Tokens *)
 %token <string> INT_CONSTANT
 %token <string> NAME
 %token <string> STRING_CONSTANT
-
 %token RETURN
 %token WHILE
 %token OTHERWISE

@@ -1,34 +1,37 @@
+(* A lexer implementation using sedlex *)
 
 (*utils*)
+
+(*Print debug messages, set debug = true*)
 let debug: bool = false
 let debug_print (s:string) =
   if debug then (print_string s; print_newline())
 
-
+(* explodes a string into a char list*)
 let explode_str (s: string): char list =
   let rec exp i l =
     if i < 0 then l else exp (i - 1) (s.[i] :: l) in
   exp (String.length s - 1) []
 
+(* implodes a char list into a string*)
 let rec implode_str (l: char list) : string = 
   match l with
   | hd::tl -> (String.make 1 hd) ^ (implode_str tl)
   | [] -> ""
 
-
-
-let rec _unescape (l: char list): char list= 
+(* unescape characters in a stirng*)
+let rec unescape (s:string) = 
+  implode_str (_unescape (explode_str s))
+and  _unescape (l: char list): char list= 
   match l with
   | '\\'::'n'::rest -> '\n'::rest
   | '\\'::'t'::rest -> '\t'::rest
   | '\\'::'\"'::rest -> '\"'::rest
   | '\\'::'\\'::rest -> '\\'::rest
   | hd::tl -> hd::_unescape tl
-  | [] -> []
+  | [] -> [];;
 
-let unescape (s:string) = 
-  implode_str (_unescape (explode_str s))
-
+(*strips a string of leading and ending qoutes *)
 let stripQuotes str = 
   match explode_str str with
   | '\"'::rest -> (match List.rev rest with
@@ -54,6 +57,7 @@ let name = [%sedlex.regexp? alphabet, (Star alphanum)]
 open Parser
 exception Eof
 
+(* Read the tokens, token() is called by the parser *)
 let rec token buf =
   match%sedlex buf with
   | "return" -> debug_print "RETURN"; RETURN
