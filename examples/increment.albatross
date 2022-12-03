@@ -6,7 +6,7 @@ fun increment int (y int) {
 
 fun main void () {
 
-    while (x < 10) {
+    while (x < 3) {
         printint(x);
         x := increment(x);
     }
