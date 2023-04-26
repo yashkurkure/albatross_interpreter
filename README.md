@@ -1,5 +1,7 @@
 # Albatross Interpreter
 
+[Language spec](https://github.com/yashkurkure/albatross_interpreter/blob/master/albatross.pdf)
+
 An interpreter for the ***albatross programming language*** developed in CS473: Compiler Design - Fall 22 and CS476: Programming Language Design - Fall 22 at UIC.
 
 The interpreter is written using OCaml that uses sedlex (Lexer) and Menhir (LR(1) parser) opam packages.
